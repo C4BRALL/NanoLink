@@ -10,17 +10,19 @@
   },
   "scripts": {
     "build": "nest build",
+    "check-types": "tsc --noEmit",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
-    "test": "jest",
-    "test:watch": "jest --watch",
-    "test:cov": "jest --coverage",
+    "test": "node -r ts-node/register -r tsconfig-paths/register node_modules/jest/bin/jest.js --config ./test/jest.json --no-cache --runInBand --passWithNoTests",
+    "test:watch": "node -r ts-node/register -r tsconfig-paths/register node_modules/jest/bin/jest.js --config ./test/jest.json --no-cache --runInBand --passWithNoTests --watch",
+    "test:cov": "node -r ts-node/register -r tsconfig-paths/register node_modules/jest/bin/jest.js --config ./test/jest.json --no-cache --runInBand --passWithNoTests --coverage",
     "test:debug": "node --experimental-vm-modules --inspect-brk -r ts-node/register -r tsconfig-paths/register node_modules/jest/bin/jest.js --config ./test/jest.json --no-cache --runInBand --passWithNoTests --watchAll",
-    "test:e2e": "jest --config ./test/jest.json"
+    "test:e2e": "node -r ts-node/register -r tsconfig-paths/register node_modules/jest/bin/jest.js --config ./test/jest.json --no-cache --runInBand --passWithNoTests",
+    "prepare": "husky"
   },
   "dependencies": {
     "@nestjs/common": "^11.0.1",
@@ -51,6 +53,7 @@
     "eslint-config-prettier": "^10.0.1",
     "eslint-plugin-prettier": "^5.2.2",
     "globals": "^16.0.0",
+    "husky": "^9.1.7",
     "jest": "^29.7.0",
     "prettier": "^3.4.2",
     "source-map-support": "^0.5.21",
