@@ -6,11 +6,7 @@ import { ConfigService } from '@nestjs/config';
 export class EnvironmentConfigService {
   constructor(private readonly configService: ConfigService<environmentConfigSchema, true>) {}
 
-  get<T extends keyof environmentConfigSchema>(key: T, defaultValue?: environmentConfigSchema[T]): environmentConfigSchema[T] {
+  get<T extends keyof environmentConfigSchema>(key: T): environmentConfigSchema[T] {
     return this.configService.get(key);
   }
 }
-
-// export const environmentConfig = new EnvironmentConfigService(
-//   new ConfigService<environmentConfigSchema, true>(),
-// );
