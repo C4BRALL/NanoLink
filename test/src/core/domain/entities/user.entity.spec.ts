@@ -93,7 +93,7 @@ describe('UserEntity', () => {
 
     expect(userStub.deletedAt).toEqual(mockDate2);
     expect(userStub.updatedAt).toEqual(mockDate2);
-  })
+  });
 
   it('Should Restore User', () => {
     global.Date = jest.fn(() => mockDate2) as any;
@@ -104,7 +104,7 @@ describe('UserEntity', () => {
 
     expect(userStub.deletedAt).toBeUndefined();
     expect(userStub.updatedAt).toEqual(mockDate2);
-  })
+  });
 
   it('Should Update User', () => {
     userStub.update({
@@ -117,15 +117,15 @@ describe('UserEntity', () => {
     expect(userStub.email).toBe('john.doe31@mail.com');
     expect(userStub.password).toBe('123456hsg123');
     expect(userStub.updatedAt).toBeDefined();
-  })
+  });
 
   it('Should Check if User is Deleted', () => {
     userStub.softDelete();
 
     expect(userStub.isDeleted()).toBe(true);
-  })
+  });
 
   it('Should Check if User is not Deleted', () => {
     expect(userStub.isDeleted()).toBe(false);
-  })
+  });
 });
