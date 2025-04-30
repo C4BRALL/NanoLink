@@ -1,3 +1,5 @@
+import { UserEntitySchema, userEntitySchema } from '../validations/user.entity.schema';
+
 export class UserEntity {
   id: string;
   name: string;
@@ -7,22 +9,15 @@ export class UserEntity {
   updatedAt: Date;
   deletedAt?: Date;
 
-  constructor(params: {
-    id?: string;
-    name: string;
-    email: string;
-    password: string;
-    createdAt?: Date;
-    updatedAt?: Date;
-    deletedAt?: Date;
-  }) {
-    this.id = params.id || crypto.randomUUID();
-    this.name = params.name;
-    this.email = params.email;
-    this.password = params.password;
-    this.createdAt = params.createdAt || new Date();
-    this.updatedAt = params.updatedAt || new Date();
-    this.deletedAt = params.deletedAt;
+  constructor(params: UserEntitySchema) {
+    const validatedParams = userEntitySchema.parse(params);
+    this.id = validatedParams.id || crypto.randomUUID();
+    this.name = validatedParams.name;
+    this.email = validatedParams.email;
+    this.password = validatedParams.password;
+    this.createdAt = validatedParams.createdAt || new Date();
+    this.updatedAt = validatedParams.updatedAt || new Date();
+    this.deletedAt = validatedParams.deletedAt;
   }
 
   softDelete(): void {
@@ -44,5 +39,10 @@ export class UserEntity {
 
   isDeleted(): boolean {
     return !!this.deletedAt;
+  }
+
+  getUserData() {
+    const { password, ...userWithoutPassword } = this;
+    return userWithoutPassword;
   }
 }

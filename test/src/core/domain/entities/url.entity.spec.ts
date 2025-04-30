@@ -110,9 +110,9 @@ describe('UrlEntity', () => {
 
     global.Date = jest.fn(() => mockDate2) as any;
     global.Date.now = jest.fn(() => mockDate2.getTime());
-    
+
     urlStub.incrementClickCount();
-    
+
     expect(urlStub.clickCount).toBe(2);
     expect(urlStub.lastClickDate).toEqual(mockDate2);
     expect(urlStub.updatedAt).toEqual(mockDate2);
@@ -135,12 +135,13 @@ describe('UrlEntity', () => {
     global.Date = jest.fn(() => mockDate2) as any;
     global.Date.now = jest.fn(() => mockDate2.getTime());
 
+    urlStub.softDelete();
     urlStub.restore();
 
     expect(urlStub.deletedAt).toBeUndefined();
     expect(urlStub.updatedAt).toEqual(mockDate2);
   });
-  
+
   it('Should update the UrlEntity', () => {
     global.Date = jest.fn(() => mockDate2) as any;
     global.Date.now = jest.fn(() => mockDate2.getTime());
@@ -155,5 +156,9 @@ describe('UrlEntity', () => {
     urlStub.softDelete();
 
     expect(urlStub.isDeleted()).toBe(true);
-  });  
+  });
+
+  it('Should check if the UrlEntity is not deleted', () => {
+    expect(urlStub.isDeleted()).toBe(false);
+  });
 });
