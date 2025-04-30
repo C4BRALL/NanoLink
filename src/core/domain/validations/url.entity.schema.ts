@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 export const urlEntitySchema = z.object({
-  id: z.string().optional(),
+  id: z.string().uuid({ message: 'Invalid UUID' }).optional(),
   shortCode: z
     .string()
     .min(6, { message: 'Short code must be 6 characters long' })

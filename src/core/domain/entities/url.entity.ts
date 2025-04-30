@@ -1,4 +1,4 @@
-import { urlEntitySchema } from '../validations/url.entity.schema';
+import { UrlEntitySchema, urlEntitySchema } from '../validations/url.entity.schema';
 
 export class UrlEntity {
   id: string;
@@ -11,17 +11,7 @@ export class UrlEntity {
   clickCount: number;
   lastClickDate?: Date;
 
-  constructor(params: {
-    id?: string;
-    shortCode: string;
-    originalUrl: string;
-    userId?: string;
-    createdAt?: Date | number;
-    updatedAt?: Date | number;
-    deletedAt?: Date | number;
-    clickCount?: number;
-    lastClickDate?: Date;
-  }) {
+  constructor(params: UrlEntitySchema) {
     const validatedData = urlEntitySchema.parse(params);
 
     this.id = validatedData.id || crypto.randomUUID();

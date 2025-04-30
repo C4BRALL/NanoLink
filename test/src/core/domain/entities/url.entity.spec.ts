@@ -12,7 +12,7 @@ describe('UrlEntity', () => {
   beforeEach(() => {
     jest.spyOn(Date, 'now').mockReturnValue(expectedCreatedAt);
     urlStub = new UrlEntity({
-      id: '1',
+      id: 'a4de3c9d-88e1-4c82-b34d-ee94b24e2084',
       shortCode: 'short1',
       originalUrl: 'https://www.google.com',
       userId: '123e4567-e89b-12d3-a456-426614174000',
@@ -27,7 +27,7 @@ describe('UrlEntity', () => {
 
   it('should throw error when creating a new UrlEntity with invalid data', () => {
     const invalidData = {
-      id: '1',
+      id: 'a4de3c9d-88e1-4c82-b34d-ee94b24e2084',
       shortCode: '',
       originalUrl: 'not-a-valid-url',
       userId: 'invalid-user-id',
@@ -39,7 +39,7 @@ describe('UrlEntity', () => {
   it('should provide specific error messages for invalid fields', () => {
     try {
       new UrlEntity({
-        id: '1',
+        id: 'a4de3c9d-88e1-4c82-b34d-ee94b24e2084',
         shortCode: '',
         originalUrl: 'not-a-valid-url',
         userId: 'invalid-user-id',
@@ -63,7 +63,7 @@ describe('UrlEntity', () => {
 
   it('Should create a new UrlEntity with valid data with userId', () => {
     const validData = {
-      id: '1',
+      id: 'a4de3c9d-88e1-4c82-b34d-ee94b24e2084',
       shortCode: 'short1',
       originalUrl: 'https://www.google.com',
       userId: '123e4567-e89b-12d3-a456-426614174000',
@@ -85,7 +85,7 @@ describe('UrlEntity', () => {
 
   it('Should create a new UrlEntity with valid data without userId', () => {
     const validData = {
-      id: '1',
+      id: 'a4de3c9d-88e1-4c82-b34d-ee94b24e2084',
       shortCode: 'short1',
       originalUrl: 'https://www.google.com',
       clickCount: 1,

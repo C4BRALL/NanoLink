@@ -19,8 +19,8 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
-    "test:debug": "node --experimental-vm-modules --inspect-brk -r ts-node/register -r tsconfig-paths/register node_modules/jest/bin/jest.js --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "test:debug": "node --experimental-vm-modules --inspect-brk -r ts-node/register -r tsconfig-paths/register node_modules/jest/bin/jest.js --config ./test/jest.json --no-cache --runInBand --passWithNoTests --watchAll",
+    "test:e2e": "jest --config ./test/jest.json"
   },
   "dependencies": {
     "@nestjs/common": "^11.0.1",
