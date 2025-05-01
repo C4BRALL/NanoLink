@@ -17,12 +17,12 @@ export class UrlEntity {
     this.id = validatedData.id || crypto.randomUUID();
     this.shortCode = validatedData.shortCode;
     this.originalUrl = validatedData.originalUrl;
-    this.userId = validatedData.userId;
+    this.userId = validatedData.userId === null ? undefined : validatedData.userId;
     this.createdAt = validatedData.createdAt || new Date();
     this.updatedAt = validatedData.updatedAt || new Date();
-    this.deletedAt = validatedData.deletedAt;
+    this.deletedAt = validatedData.deletedAt === null ? undefined : validatedData.deletedAt;
     this.clickCount = validatedData.clickCount || 0;
-    this.lastClickDate = validatedData.lastClickDate || new Date();
+    this.lastClickDate = validatedData.lastClickDate || undefined;
   }
 
   incrementClickCount(): void {
