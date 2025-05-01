@@ -87,8 +87,10 @@ describe('CreateUrlController', () => {
   });
 
   it('should throw an error if the originalUrl is not a valid url', async () => {
-    await expect(_createUrlController.createUrl({
-      originalUrl: 'invalid-url',
-    })).rejects.toThrow();
-  });  
+    await expect(
+      _createUrlController.createUrl({
+        originalUrl: 'invalid-url',
+      }),
+    ).rejects.toThrow();
+  });
 });

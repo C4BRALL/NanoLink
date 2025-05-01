@@ -3,6 +3,8 @@ import { CreateUrlInterface } from 'src/core/domain/use-cases/create-url.interfa
 import { CreateUrlService } from 'src/core/use-cases/url/create-url.service';
 import { CreateUrlRepositoryService } from 'src/infrastructure/database/repositories/url-repository/create-url-repository.service';
 import { configureDbDriverMock } from '../../../../_mocks_/configure-db-driver-mock';
+import { EnvironmentConfigService } from 'src/infrastructure/config/environment-config/environment-config.service';
+import { ConfigService } from '@nestjs/config';
 
 describe('CreateUrlService', () => {
   let _createUrlService: CreateUrlInterface;
@@ -30,7 +32,11 @@ describe('CreateUrlService', () => {
     const spies = await configureDbDriverMock(seedDB);
     mockRepository = spies.Repository;
     _urlRepository = new CreateUrlRepositoryService(mockRepository);
-    _createUrlService = new CreateUrlService(_urlRepository);
+    _createUrlService = new CreateUrlService(_urlRepository, new EnvironmentConfigService(new ConfigService()));
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
   });
 
   it('should create a new url with all properties', async () => {
@@ -55,6 +61,7 @@ describe('CreateUrlService', () => {
     expect(result.url.isDeleted()).toBe(false);
     expect(result.url.clickCount).toBe(0);
     expect(result.url.lastClickDate).toBeUndefined();
+    expect(result.link).toBeDefined();
   });
 
   it('should create a new url without userId property', async () => {
@@ -78,6 +85,7 @@ describe('CreateUrlService', () => {
     expect(result.url.isDeleted()).toBe(false);
     expect(result.url.clickCount).toBe(0);
     expect(result.url.lastClickDate).toBeUndefined();
+    expect(result.link).toBeDefined();
   });
 
   it('should throw an error if the originalUrl is not a valid url', async () => {
