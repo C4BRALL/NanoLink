@@ -5,9 +5,10 @@ import { DatabaseModule } from './infrastructure/database/database.module';
 import { AuthModule } from './infrastructure/auth/auth.module';
 import { InterfaceModule } from './interface/interface.module';
 import { DocumentationModule } from './infrastructure/documentation/documentation.module';
+import { InfrastructureModule } from './infrastructure/infrastructure.module';
 
 @Module({
-  imports: [DomainModule, UseCasesModule, DatabaseModule, AuthModule, InterfaceModule, DocumentationModule],
+  imports: [DomainModule, UseCasesModule, DatabaseModule, AuthModule, InterfaceModule, DocumentationModule, InfrastructureModule],
   controllers: [],
   providers: [],
 })
