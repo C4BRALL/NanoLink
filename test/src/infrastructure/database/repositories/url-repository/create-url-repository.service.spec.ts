@@ -1,7 +1,7 @@
 import { UrlEntity } from 'src/core/domain/entities/url.entity';
 import { CreateUrlRepositoryInterface } from 'src/core/domain/repositories/create-url-repository.interface';
 import { CreateUrlRepositoryService } from 'src/infrastructure/database/repositories/url-repository/create-url-repository.service';
-import { configureDbDriverMockt } from '../../../../../_mocks_/configure-db-driver-mockt';
+import { configureDbDriverMock } from '../../../../../_mocks_/configure-db-driver-mock';
 
 jest.mock('src/infrastructure/database/mappers/url.mapper', () => ({
   UrlMapper: {
@@ -45,7 +45,7 @@ describe('CreateUrlRepositoryService', () => {
       },
     ];
 
-    const spies = await configureDbDriverMockt(seedDB);
+    const spies = await configureDbDriverMock(seedDB);
     mockRepository = spies.Repository;
 
     createUrlRepository = new CreateUrlRepositoryService(mockRepository);

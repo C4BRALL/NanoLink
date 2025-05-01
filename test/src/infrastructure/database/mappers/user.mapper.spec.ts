@@ -1,6 +1,6 @@
-import { UserEntity } from "src/core/domain/entities/user.entity";
-import { UserMapper } from "src/infrastructure/database/mappers/user.mapper";
-import { UserModel } from "src/infrastructure/database/models/user.model";
+import { UserEntity } from 'src/core/domain/entities/user.entity';
+import { UserMapper } from 'src/infrastructure/database/mappers/user.mapper';
+import { UserModel } from 'src/infrastructure/database/models/user.model';
 
 describe('UserMapper', () => {
   describe('toDomain', () => {

@@ -17,19 +17,17 @@ describe('UrlMapper', () => {
       const result = UrlMapper.toDomain(mockModel);
 
       expect(result).toBeInstanceOf(UrlEntity);
-      expect(result).toEqual(
-        {
-          id: expect.any(String),
-          shortCode: mockModel.shortCode,
-          originalUrl: mockModel.originalUrl,
-          userId: expect.any(String),
-          createdAt: mockModel.createdAt,
-          updatedAt: mockModel.updatedAt,
-          deletedAt: undefined,
-          clickCount: 2,
-          lastClickDate: mockModel.lastClickDate
-        }
-      )
+      expect(result).toEqual({
+        id: expect.any(String),
+        shortCode: mockModel.shortCode,
+        originalUrl: mockModel.originalUrl,
+        userId: expect.any(String),
+        createdAt: mockModel.createdAt,
+        updatedAt: mockModel.updatedAt,
+        deletedAt: undefined,
+        clickCount: 2,
+        lastClickDate: mockModel.lastClickDate,
+      });
     });
 
     it('should correctly convert a UrlModel to a UrlEntity without optional properties', () => {
@@ -89,20 +87,18 @@ describe('UrlMapper', () => {
       const result = UrlMapper.toPersistence(mockEntity);
 
       expect(result).toBeInstanceOf(UrlModel);
-      expect(result).toEqual(
-        { 
-          id: expect.any(String),
-          shortCode: mockEntity.shortCode,
-          originalUrl: mockEntity.originalUrl,
-          userId: undefined,
-          user: undefined,
-          clickCount: 0,
-          lastClickDate: undefined,
-          createdAt: mockEntity.createdAt,
-          updatedAt: mockEntity.updatedAt,
-          deletedAt: undefined,
-        }
-      );
+      expect(result).toEqual({
+        id: expect.any(String),
+        shortCode: mockEntity.shortCode,
+        originalUrl: mockEntity.originalUrl,
+        userId: undefined,
+        user: undefined,
+        clickCount: 0,
+        lastClickDate: undefined,
+        createdAt: mockEntity.createdAt,
+        updatedAt: mockEntity.updatedAt,
+        deletedAt: undefined,
+      });
     });
   });
 });

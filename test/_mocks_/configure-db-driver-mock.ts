@@ -2,7 +2,7 @@ import { UrlEntity } from 'src/core/domain/entities/url.entity';
 import { Repository } from 'typeorm';
 import { UrlModel } from 'src/infrastructure/database/models/url.model';
 
-export async function configureDbDriverMockt(initialData = [{ data: [{}] }]) {
+export async function configureDbDriverMock(initialData = [{ data: [{}] }]) {
   const seedDb = () => {
     const dbData: any[] = [];
     initialData.forEach(({ data }) => {

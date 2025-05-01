@@ -1,19 +1,28 @@
 {
   "moduleFileExtensions": ["js", "json", "ts"],
-  "rootDir": ".",
+  "rootDir": "..",
   "testEnvironment": "node",
-  "testRegex": ".spec.ts$",
+  "testRegex": "test/.*\\.spec\\.ts$",
   "transform": {
-    "^.+\\.(ts|tsx|js)$": "ts-jest"
+    "^.+\\.(ts|tsx|js)$": ["ts-jest", {
+      "isolatedModules": true
+    }]
   },
   "clearMocks": true,
   "preset": "ts-jest",
   "moduleNameMapper": {
-    "^src/(.*)$": "<rootDir>/../src/$1"
+    "^src/(.*)$": "<rootDir>/src/$1"
   },
-  "globals": {
-     "ts-jest": {
-       "isolatedModules": true
-     }
-   }
+  "coverageReporters": ["text", "lcov"],
+  "coverageDirectory": "./coverage",
+  "collectCoverageFrom": [
+    "src/**/*.ts",
+    "!src/**/*.module.ts",
+    "!src/**/*-config*.ts",
+    "!src/**/*.model.ts",
+    "!src/**/*.entity.ts",
+    "!src/**/index.ts",
+    "!src/**/*.interface.ts",
+    "!src/main.ts"
+  ]
 }
