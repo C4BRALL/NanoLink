@@ -4,6 +4,7 @@ import { ConfigurationModule } from '../config/config.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DatabaseConfigService } from '../config/database-config/database-config.service';
 import { UrlModel } from './models/url.model';
+import { DatabaseErrorHandler } from './utils/db-error-handler';
 
 @Module({
   imports: [
@@ -19,7 +20,8 @@ import { UrlModel } from './models/url.model';
       provide: 'CreateUrlRepositoryInterface',
       useClass: CreateUrlRepositoryService,
     },
+    DatabaseErrorHandler,
   ],
-  exports: ['CreateUrlRepositoryInterface'],
+  exports: ['CreateUrlRepositoryInterface', DatabaseErrorHandler],
 })
 export class DatabaseModule {}
