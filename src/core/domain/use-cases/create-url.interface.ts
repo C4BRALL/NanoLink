@@ -7,7 +7,6 @@ export interface CreateUrlInterface {
 export namespace CreateUrlInterface {
   export type Params = {
     originalUrl: string;
-    shortCode: string;
     userId?: string;
   };
 
