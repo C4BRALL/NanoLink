@@ -1,4 +1,5 @@
-import { BadRequestException, Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Post } from '@nestjs/common';
+import { InvalidUserDataError } from 'src/core/errors/user-error';
 import { CreateUrlService } from 'src/core/use-cases/url/create-url.service';
 import { CreateUrlDto, CreateUrlSchema } from 'src/interface/dtos/url/create-url.dto';
 
@@ -10,7 +11,9 @@ export class CreateUrlController {
   async createUrl(@Body() body: CreateUrlDto) {
     const result = CreateUrlSchema.safeParse(body);
     if (!result.success) {
-      throw new BadRequestException(result.error.message);
+      const errorMessage = result.error.errors.map((err) => `${err.path.join('.')}: ${err.message}`).join(', ');
+
+      throw new InvalidUserDataError(errorMessage);
     }
 
     const url = await this.createUrlService.execute({

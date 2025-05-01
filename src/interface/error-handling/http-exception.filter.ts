@@ -31,8 +31,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
       } else if (typeof exceptionResponse === 'string') {
         message = exceptionResponse;
       }
-    }
-    else if (actualException instanceof QueryFailedError) {
+    } else if (actualException instanceof QueryFailedError) {
       status = HttpStatus.BAD_REQUEST;
 
       if (actualException.driverError && actualException.driverError.code === '23505') {
@@ -44,8 +43,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
         if (detail) {
           details = { detail };
         }
-      }
-      else if (actualException.driverError && actualException.driverError.code === '23503') {
+      } else if (actualException.driverError && actualException.driverError.code === '23503') {
         status = HttpStatus.BAD_REQUEST;
 
         if (actualException.driverError.detail) {

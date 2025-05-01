@@ -5,6 +5,7 @@ import { CreateUrlController } from 'src/interface/controllers/url/create-url.co
 import { configureDbDriverMock } from '../../../../_mocks_/configure-db-driver-mock';
 import { EnvironmentConfigService } from 'src/infrastructure/config/environment-config/environment-config.service';
 import { ConfigService } from '@nestjs/config';
+import { DatabaseErrorHandler } from 'src/infrastructure/database/utils/db-error-handler';
 
 describe('CreateUrlController', () => {
   const expectedCreatedAt = Date.now();
@@ -34,7 +35,7 @@ describe('CreateUrlController', () => {
 
     mockRepository = spies.Repository;
 
-    _urlRepository = new CreateUrlRepositoryService(mockRepository);
+    _urlRepository = new CreateUrlRepositoryService(mockRepository, new DatabaseErrorHandler());
     _createUrlService = new CreateUrlService(_urlRepository, new EnvironmentConfigService(new ConfigService()));
     _createUrlController = new CreateUrlController(_createUrlService);
   });

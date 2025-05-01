@@ -4,6 +4,7 @@ import { CreateUrlInterface } from 'src/core/domain/use-cases/create-url.interfa
 import { nanoid } from 'nanoid';
 import { CreateUrlRepositoryInterface } from 'src/core/domain/repositories/create-url-repository.interface';
 import { EnvironmentConfigService } from 'src/infrastructure/config/environment-config/environment-config.service';
+import { UrlCreationFailedError } from '../errors/url-error';
 
 @Injectable()
 export class CreateUrlService implements CreateUrlInterface {
@@ -13,14 +14,21 @@ export class CreateUrlService implements CreateUrlInterface {
     private readonly environmentConfig: EnvironmentConfigService,
   ) {}
   async execute(params: CreateUrlInterface.Params): Promise<CreateUrlInterface.Output> {
-    const url = new UrlEntity({
-      originalUrl: params.originalUrl,
-      shortCode: nanoid(6),
-      userId: params.userId,
-    });
+    try {
+      const url = new UrlEntity({
+        originalUrl: params.originalUrl,
+        shortCode: nanoid(6),
+        userId: params.userId,
+      });
 
-    await this.urlRepository.save(url);
+      await this.urlRepository.save(url);
 
-    return { url, link: `${this.environmentConfig.get('DB_DOMAIN')}/${url.shortCode}` };
+      return { url, link: `${this.environmentConfig.get('DB_DOMAIN') || 'http://localhost:3000'}/${url.shortCode}` };
+    } catch (error) {
+      if (error instanceof Error) {
+        throw new UrlCreationFailedError(params.originalUrl, error);
+      }
+      throw error;
+    }
   }
 }

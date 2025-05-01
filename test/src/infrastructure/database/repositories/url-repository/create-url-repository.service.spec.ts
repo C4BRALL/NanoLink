@@ -22,6 +22,7 @@ jest.mock('src/infrastructure/database/mappers/url.mapper', () => ({
 }));
 
 import { UrlMapper } from 'src/infrastructure/database/mappers/url.mapper';
+import { DatabaseErrorHandler } from 'src/infrastructure/database/utils/db-error-handler';
 
 describe('CreateUrlRepositoryService', () => {
   const expectedCreatedAt = Date.now();
@@ -48,7 +49,7 @@ describe('CreateUrlRepositoryService', () => {
     const spies = await configureDbDriverMock(seedDB);
     mockRepository = spies.Repository;
 
-    createUrlRepository = new CreateUrlRepositoryService(mockRepository);
+    createUrlRepository = new CreateUrlRepositoryService(mockRepository, new DatabaseErrorHandler());
   });
 
   afterEach(() => {

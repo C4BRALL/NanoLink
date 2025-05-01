@@ -5,6 +5,7 @@ import { CreateUrlRepositoryService } from 'src/infrastructure/database/reposito
 import { configureDbDriverMock } from '../../../../_mocks_/configure-db-driver-mock';
 import { EnvironmentConfigService } from 'src/infrastructure/config/environment-config/environment-config.service';
 import { ConfigService } from '@nestjs/config';
+import { DatabaseErrorHandler } from 'src/infrastructure/database/utils/db-error-handler';
 
 describe('CreateUrlService', () => {
   let _createUrlService: CreateUrlInterface;
@@ -31,7 +32,7 @@ describe('CreateUrlService', () => {
 
     const spies = await configureDbDriverMock(seedDB);
     mockRepository = spies.Repository;
-    _urlRepository = new CreateUrlRepositoryService(mockRepository);
+    _urlRepository = new CreateUrlRepositoryService(mockRepository, new DatabaseErrorHandler());
     _createUrlService = new CreateUrlService(_urlRepository, new EnvironmentConfigService(new ConfigService()));
   });
 
