@@ -12,5 +12,6 @@ export namespace CreateUrlInterface {
 
   export type Output = {
     url: UrlEntity;
+    link: string;
   };
 }

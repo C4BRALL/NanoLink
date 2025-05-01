@@ -8,6 +8,7 @@ export const environmentConfigSchema = z.object({
   DB_PASSWORD: z.string().min(1),
   DB_NAME: z.string().min(1),
   DB_LOGGING: z.coerce.boolean().default(false),
+  DB_DOMAIN: z.string().url().min(1),
 });
 
 export type environmentConfigSchema = z.infer<typeof environmentConfigSchema>;

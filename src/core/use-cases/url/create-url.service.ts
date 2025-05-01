@@ -3,12 +3,14 @@ import { UrlEntity } from 'src/core/domain/entities/url.entity';
 import { CreateUrlInterface } from 'src/core/domain/use-cases/create-url.interface';
 import { nanoid } from 'nanoid';
 import { CreateUrlRepositoryInterface } from 'src/core/domain/repositories/create-url-repository.interface';
+import { EnvironmentConfigService } from 'src/infrastructure/config/environment-config/environment-config.service';
 
 @Injectable()
 export class CreateUrlService implements CreateUrlInterface {
   constructor(
     @Inject('CreateUrlRepositoryInterface')
     private readonly urlRepository: CreateUrlRepositoryInterface,
+    private readonly environmentConfig: EnvironmentConfigService,
   ) {}
   async execute(params: CreateUrlInterface.Params): Promise<CreateUrlInterface.Output> {
     const url = new UrlEntity({
@@ -19,6 +21,6 @@ export class CreateUrlService implements CreateUrlInterface {
 
     await this.urlRepository.save(url);
 
-    return { url };
+    return { url, link: `${this.environmentConfig.get('DB_DOMAIN')}/${url.shortCode}` };
   }
 }
