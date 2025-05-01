@@ -10,5 +10,10 @@
   "preset": "ts-jest",
   "moduleNameMapper": {
     "^src/(.*)$": "<rootDir>/../src/$1"
-  }
+  },
+  "globals": {
+     "ts-jest": {
+       "isolatedModules": true
+     }
+   }
 }
