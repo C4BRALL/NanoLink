@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { CreateUrlService } from './create-url/create-url.service';
-import { GetUrlService } from './get-url/get-url.service';
+import { CreateUrlService } from './url/create-url.service';
+import { GetUrlService } from './url/get-url.service';
 import { InfrastructureModule } from 'src/infrastructure/infrastructure.module';
 
 @Module({

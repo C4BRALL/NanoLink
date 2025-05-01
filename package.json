@@ -19,7 +19,7 @@
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "node -r ts-node/register -r tsconfig-paths/register node_modules/jest/bin/jest.js --config ./test/jest.json --no-cache --runInBand --passWithNoTests",
     "test:watch": "node -r ts-node/register -r tsconfig-paths/register node_modules/jest/bin/jest.js --config ./test/jest.json --no-cache --runInBand --passWithNoTests --watch",
-    "test:cov": "node -r ts-node/register -r tsconfig-paths/register node_modules/jest/bin/jest.js --config ./test/jest.json --no-cache --runInBand --passWithNoTests --coverage",
+    "test:cov": "node -r ts-node/register -r tsconfig-paths/register node_modules/jest/bin/jest.js --config ./test/jest.json --no-cache --runInBand --passWithNoTests --collectCoverage true",
     "test:debug": "node --experimental-vm-modules --inspect-brk -r ts-node/register -r tsconfig-paths/register node_modules/jest/bin/jest.js --config ./test/jest.json --no-cache --runInBand --passWithNoTests --watchAll",
     "test:e2e": "node -r ts-node/register -r tsconfig-paths/register node_modules/jest/bin/jest.js --config ./test/jest.json --no-cache --runInBand --passWithNoTests",
     "prepare": "husky"
@@ -31,7 +31,7 @@
     "@nestjs/platform-express": "^11.0.1",
     "@nestjs/swagger": "^11.1.5",
     "@nestjs/typeorm": "^11.0.0",
-    "nanoid": "^5.1.5",
+    "nanoid": "^3.3.7",
     "pg": "^8.15.6",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1",
