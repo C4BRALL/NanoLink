@@ -18,8 +18,11 @@ export async function configureDbDriverMock(initialData = [{ data: [{}] }]) {
       _dbData.push(url);
       return Promise.resolve(url);
     }),
-    find: jest.fn(),
-    findOne: jest.fn(),
+    find: jest.fn(() => Promise.resolve(seedDb())),
+    findOne: jest.fn(() => {
+      const data = seedDb();
+      return Promise.resolve(data.length > 0 ? data[0] : null);
+    }),
     delete: jest.fn(),
     update: jest.fn(),
   } as unknown as Repository<UrlModel>;

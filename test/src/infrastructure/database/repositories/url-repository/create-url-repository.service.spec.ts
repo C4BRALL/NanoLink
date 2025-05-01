@@ -6,7 +6,7 @@ import { configureDbDriverMock } from '../../../../../_mocks_/configure-db-drive
 jest.mock('src/infrastructure/database/mappers/url.mapper', () => ({
   UrlMapper: {
     toPersistence: jest.fn((entity) => ({
-      id: entity.id || '123',
+      id: entity.id || 'd5d46e22-f1cc-4991-b461-b17a316ca545',
       shortCode: entity.shortCode,
       originalUrl: entity.originalUrl,
     })),
@@ -34,7 +34,7 @@ describe('CreateUrlRepositoryService', () => {
     const initialData = {
       originalUrl: 'https://www.google.com',
       shortCode: '123456',
-      userId: '123456',
+      userId: 'fc32bc52-de79-4438-9cc8-3727d633cd1f',
       createdAt: expectedCreatedAt,
       updatedAt: expectedCreatedAt,
     };
