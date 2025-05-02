@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { UrlEntity } from 'src/core/domain/entities/url.entity';
 import { UrlMapper } from '../../mappers/url.mapper';
-import { EntityNotFoundError, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UrlModel } from '../../models/url.model';
 import { DatabaseErrorHandler } from '../../utils/db-error-handler';
@@ -14,11 +14,11 @@ export class GetUrlByShortCodeRepositoryService implements GetUrlByShortCodeRepo
     private readonly urlRepository: Repository<UrlModel>,
     private readonly errorHandler: DatabaseErrorHandler,
   ) {}
-  async findByShortCode(shortCode: string): Promise<UrlEntity> {
+  async findByShortCode(shortCode: string): Promise<UrlEntity | null> {
     try {
       const url = await this.urlRepository.findOne({ where: { shortCode } });
       if (!url) {
-        throw new EntityNotFoundError('URL', shortCode);
+        return null;
       }
       return UrlMapper.toDomain(url);
     } catch (error) {
