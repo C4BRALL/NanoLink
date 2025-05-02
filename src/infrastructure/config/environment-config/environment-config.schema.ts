@@ -9,6 +9,7 @@ export const environmentConfigSchema = z.object({
   DB_NAME: z.string().min(1),
   DB_LOGGING: z.coerce.boolean().default(false),
   API_DOMAIN: z.string().url().min(1),
+  DB_TYPEORM_SYNC: z.coerce.boolean().default(false),
 });
 
 export type environmentConfigSchema = z.infer<typeof environmentConfigSchema>;

@@ -21,7 +21,6 @@
     "test:watch": "node -r ts-node/register -r tsconfig-paths/register node_modules/jest/bin/jest.js --config ./test/jest.json --no-cache --runInBand --passWithNoTests --watch",
     "test:cov": "node -r ts-node/register -r tsconfig-paths/register node_modules/jest/bin/jest.js --config ./test/jest.json --no-cache --runInBand --passWithNoTests --collectCoverage true",
     "test:debug": "node --experimental-vm-modules --inspect-brk -r ts-node/register -r tsconfig-paths/register node_modules/jest/bin/jest.js --config ./test/jest.json --no-cache --runInBand --passWithNoTests --watchAll",
-    "test:e2e": "node -r ts-node/register -r tsconfig-paths/register node_modules/jest/bin/jest.js --config ./test/jest.json --no-cache --runInBand --passWithNoTests",
     "prepare": "husky"
   },
   "dependencies": {
