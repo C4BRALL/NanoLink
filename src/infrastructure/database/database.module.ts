@@ -1,5 +1,4 @@
 import { Module } from '@nestjs/common';
-import { CreateUrlRepositoryService } from './repositories/url/create-url-repository.service';
 import { ConfigurationModule } from '../config/config.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DatabaseConfigService } from '../config/database-config/database-config.service';
@@ -15,13 +14,7 @@ import { DatabaseErrorHandler } from './utils/db-error-handler';
     }),
     TypeOrmModule.forFeature([UrlModel]),
   ],
-  providers: [
-    {
-      provide: 'CreateUrlRepositoryInterface',
-      useClass: CreateUrlRepositoryService,
-    },
-    DatabaseErrorHandler,
-  ],
-  exports: ['CreateUrlRepositoryInterface', DatabaseErrorHandler],
+  providers: [DatabaseErrorHandler],
+  exports: [DatabaseErrorHandler],
 })
 export class DatabaseModule {}

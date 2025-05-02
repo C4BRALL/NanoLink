@@ -18,6 +18,9 @@ export class DatabaseConfigService implements TypeOrmOptionsFactory {
       entities: [__dirname + '/../../database/models/**/*.model{.ts,.js}'],
       logging: this.configService.get('DB_LOGGING', false),
       synchronize: true,
+      ssl: {
+        rejectUnauthorized: false,
+      },
     };
   }
 }

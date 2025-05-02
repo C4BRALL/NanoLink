@@ -18,12 +18,17 @@ export class UserModel {
   @OneToMany(() => UrlModel, (url) => url.user)
   urls: UrlModel[];
 
-  @CreateDateColumn({ name: 'created_at', type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  @CreateDateColumn({ name: 'created_at', type: 'timestamp with time zone', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date;
 
-  @UpdateDateColumn({ name: 'updated_at', type: 'timestamp', default: () => 'CURRENT_TIMESTAMP', onUpdate: 'CURRENT_TIMESTAMP' })
+  @UpdateDateColumn({
+    name: 'updated_at',
+    type: 'timestamp with time zone',
+    default: () => 'CURRENT_TIMESTAMP',
+    onUpdate: 'CURRENT_TIMESTAMP',
+  })
   updatedAt: Date;
 
-  @Column({ name: 'deleted_at', nullable: true, type: 'timestamp' })
+  @Column({ name: 'deleted_at', nullable: true, type: 'timestamp with time zone' })
   deletedAt: Date | undefined;
 }
