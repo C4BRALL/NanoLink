@@ -4,7 +4,7 @@ import { GetUrlByShortCodeService } from 'src/core/use-cases/url/get-url-by-shor
 import { GetUrlByShortCodeRepositoryService } from 'src/infrastructure/database/repositories/url/get-url-by-shortcode-repository.service';
 import { DatabaseErrorHandler } from 'src/infrastructure/database/utils/db-error-handler';
 import { configureDbDriverMock } from '../../../../_mocks_/configure-db-driver-mock';
-import { UrlRetrievalFailedError } from 'src/core/use-cases/errors/url-error';
+import { UrlEntity } from 'src/core/domain/entities/url.entity';
 
 describe('GetUrlByShortCodeService', () => {
   let _getUrlByShortCodeService: GetUrlByShortCodeInterface;
@@ -20,6 +20,8 @@ describe('GetUrlByShortCodeService', () => {
   };
 
   beforeEach(async () => {
+    jest.spyOn(console, 'error').mockImplementation(() => ({ log: jest.fn() }) as any);
+
     jest.spyOn(Date, 'now').mockReturnValue(expectedCreatedAt);
 
     const seedDB = [
@@ -42,18 +44,21 @@ describe('GetUrlByShortCodeService', () => {
   it('should return the url when the short code is found', async () => {
     const result = await _getUrlByShortCodeService.execute({ shortCode: 'short1' });
 
-    expect(result.url.id).toBeDefined();
-    expect(result.url.originalUrl).toBe(initialData.originalUrl);
-    expect(result.url.shortCode).toBe(initialData.shortCode);
-    expect(result.url.userId).toBe(initialData.userId);
-    expect(result.url.createdAt).toBeInstanceOf(Date);
-    expect(result.url.updatedAt).toBeInstanceOf(Date);
-    expect(result.url.clickCount).toBe(0);
-    expect(result.url.isDeleted()).toBeFalsy();
-    expect(result.url.deletedAt).toBeUndefined();
+    expect(result.url).toBeDefined();
+    expect(result.url).toBeInstanceOf(UrlEntity);
+    expect(result.url?.id).toBeDefined();
+    expect(result.url?.originalUrl).toBe(initialData.originalUrl);
+    expect(result.url?.shortCode).toBe(initialData.shortCode);
+    expect(result.url?.userId).toBe(initialData.userId);
+    expect(result.url?.createdAt).toBeInstanceOf(Date);
+    expect(result.url?.updatedAt).toBeInstanceOf(Date);
+    expect(result.url?.clickCount).toBe(0);
+    expect(result.url?.isDeleted()).toBeFalsy();
+    expect(result.url?.deletedAt).toBeUndefined();
   });
 
-  it('should throw an error when the short code is not found', async () => {
-    await expect(_getUrlByShortCodeService.execute({ shortCode: 'non-existent-short-code' })).rejects.toThrow(UrlRetrievalFailedError);
+  it('should return null when the short code is not found', async () => {
+    const result = await _getUrlByShortCodeService.execute({ shortCode: 'inv123' });
+    expect(result.url).toBeNull();
   });
 });

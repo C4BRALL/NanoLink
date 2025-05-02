@@ -1,5 +1,5 @@
 import { UrlEntity } from '../entities/url.entity';
 
 export interface GetUrlByShortCodeRepositoryInterface {
-  findByShortCode(shortCode: string): Promise<UrlEntity>;
+  findByShortCode(shortCode: string): Promise<UrlEntity | null>;
 }

@@ -63,8 +63,8 @@ describe('GetUrlByShortCodeRepositoryService', () => {
     expect(mockRepository.findOne).toHaveBeenCalled();
     expect(UrlMapper.toDomain).toHaveBeenCalled();
     expect(url).toBeInstanceOf(UrlEntity);
-    expect(url.id).toBe('d5d46e22-f1cc-4991-b461-b17a316ca545');
-    expect(url.shortCode).toBe('123456');
-    expect(url.originalUrl).toBe('https://www.google.com');
+    expect(url?.id).toBe('d5d46e22-f1cc-4991-b461-b17a316ca545');
+    expect(url?.shortCode).toBe('123456');
+    expect(url?.originalUrl).toBe('https://www.google.com');
   });
 });

@@ -37,7 +37,11 @@ export async function configureDbDriverMock(initialData = [{ data: [{}] }]) {
       const data = seedDb();
       return Promise.resolve(
         data.find((item) => {
-          return item.shortCode === shortCode;
+          const filtered = item.shortCode === shortCode;
+          if (filtered) {
+            return filtered;
+          }
+          return null;
         }),
       );
     }),

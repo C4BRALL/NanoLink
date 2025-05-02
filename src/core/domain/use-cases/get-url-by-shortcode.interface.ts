@@ -10,6 +10,6 @@ export namespace GetUrlByShortCodeInterface {
   };
 
   export type Output = {
-    url: UrlEntity;
+    url: UrlEntity | null;
   };
 }
