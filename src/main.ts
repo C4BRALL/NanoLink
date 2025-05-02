@@ -18,6 +18,7 @@ async function bootstrap() {
   await app.listen(environmentConfigService.get('API_PORT') ?? 3000).then(() => {
     console.table({
       url: `http://localhost:${environmentConfigService.get('API_PORT') ?? 3000}`,
+      swagger: `http://localhost:${environmentConfigService.get('API_PORT') ?? 3000}/api/docs`,
     });
   });
 }
