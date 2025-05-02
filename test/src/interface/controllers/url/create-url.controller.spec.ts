@@ -13,6 +13,11 @@ describe('CreateUrlController', () => {
   let _createUrlService: CreateUrlService;
   let _urlRepository: CreateUrlRepositoryInterface;
   let mockRepository: any;
+  const mockResponse = {
+    status: jest.fn().mockReturnThis(),
+    json: jest.fn(),
+    redirect: jest.fn(),
+  };
 
   beforeEach(async () => {
     jest.spyOn(Date, 'now').mockReturnValue(expectedCreatedAt);
@@ -44,54 +49,55 @@ describe('CreateUrlController', () => {
     jest.clearAllMocks();
   });
 
-  it('should create a new url with correct data and return 200', async () => {
-    const result = await _createUrlController.createUrl({
-      originalUrl: 'https://www.google.com',
-      userId: 'fc32bc52-de79-4438-9cc8-3727d633cd1f',
-    });
-
-    expect(result).toEqual({
-      url: {
-        id: expect.any(String),
+  it('should create a new url with correct data and return 201', async () => {
+    await _createUrlController.createUrl(
+      {
         originalUrl: 'https://www.google.com',
-        shortCode: expect.any(String),
         userId: 'fc32bc52-de79-4438-9cc8-3727d633cd1f',
-        createdAt: expect.any(Date),
-        updatedAt: expect.any(Date),
-        deletedAt: undefined,
-        clickCount: 0,
-        lastClickDate: undefined,
       },
-      link: expect.any(String),
-    });
+      mockResponse as any,
+    );
+
+    expect(mockResponse.status).toHaveBeenCalledWith(201);
+    expect(mockResponse.json).toHaveBeenCalledWith(
+      expect.objectContaining({
+        url: expect.objectContaining({
+          originalUrl: 'https://www.google.com',
+          userId: 'fc32bc52-de79-4438-9cc8-3727d633cd1f',
+        }),
+        link: expect.any(String),
+      }),
+    );
   });
 
-  it('should create a new url without userId and return 200', async () => {
-    const result = await _createUrlController.createUrl({
-      originalUrl: 'https://www.google.com',
-    });
-
-    expect(result).toEqual({
-      url: {
-        id: expect.any(String),
+  it('should create a new url without userId and return 201', async () => {
+    await _createUrlController.createUrl(
+      {
         originalUrl: 'https://www.google.com',
-        shortCode: expect.any(String),
-        userId: undefined,
-        createdAt: expect.any(Date),
-        updatedAt: expect.any(Date),
-        deletedAt: undefined,
-        clickCount: 0,
-        lastClickDate: undefined,
       },
-      link: expect.any(String),
-    });
+      mockResponse as any,
+    );
+
+    expect(mockResponse.status).toHaveBeenCalledWith(201);
+    expect(mockResponse.json).toHaveBeenCalledWith(
+      expect.objectContaining({
+        url: expect.objectContaining({
+          originalUrl: 'https://www.google.com',
+          userId: undefined,
+        }),
+        link: expect.any(String),
+      }),
+    );
   });
 
   it('should throw an error if the originalUrl is not a valid url', async () => {
     await expect(
-      _createUrlController.createUrl({
-        originalUrl: 'invalid-url',
-      }),
+      _createUrlController.createUrl(
+        {
+          originalUrl: 'invalid-url',
+        },
+        mockResponse as any,
+      ),
     ).rejects.toThrow();
   });
 });

@@ -53,10 +53,10 @@ describe('ShortUrlController', () => {
     (_getUrlByShortCodeService.execute as jest.Mock).mockResolvedValue({
       url: null,
     });
+
     await expect(_shortUrlController.urlShortCode(invalidShortCode, mockResponse as any)).rejects.toThrow(
       `URL with short code '${invalidShortCode}' not found`,
     );
-
     expect(mockResponse.redirect).not.toHaveBeenCalled();
   });
 });
