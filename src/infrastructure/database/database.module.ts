@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { CreateUrlRepositoryService } from './repositories/url-repository/create-url-repository.service';
+import { CreateUrlRepositoryService } from './repositories/url/create-url-repository.service';
 import { ConfigurationModule } from '../config/config.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DatabaseConfigService } from '../config/database-config/database-config.service';
