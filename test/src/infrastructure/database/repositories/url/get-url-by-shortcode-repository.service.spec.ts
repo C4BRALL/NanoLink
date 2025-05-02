@@ -1,6 +1,8 @@
 import { UrlEntity } from 'src/core/domain/entities/url.entity';
 import { configureDbDriverMock } from '../../../../../_mocks_/configure-db-driver-mock';
 import { DatabaseErrorHandler } from 'src/infrastructure/database/utils/db-error-handler';
+import { GetUrlByShortCodeRepositoryInterface } from 'src/core/domain/repositories/get-url-by-shortcode-repository.interface';
+import { GetUrlByShortCodeRepositoryService } from 'src/infrastructure/database/repositories/url/get-url-by-shortcode-repository.service';
 
 jest.mock('src/infrastructure/database/mappers/url.mapper', () => ({
   UrlMapper: {
@@ -8,6 +10,9 @@ jest.mock('src/infrastructure/database/mappers/url.mapper', () => ({
       id: entity.id || 'd5d46e22-f1cc-4991-b461-b17a316ca545',
       shortCode: entity.shortCode,
       originalUrl: entity.originalUrl,
+      clickCount: entity.clickCount,
+      createdAt: entity.createdAt,
+      updatedAt: entity.updatedAt,
     })),
     toDomain: jest.fn(
       (model) =>
@@ -15,14 +20,16 @@ jest.mock('src/infrastructure/database/mappers/url.mapper', () => ({
           id: model.id,
           shortCode: model.shortCode,
           originalUrl: model.originalUrl,
+          clickCount: model.clickCount,
+          createdAt: model.createdAt,
+          updatedAt: model.updatedAt,
         }),
     ),
   },
 }));
 
 import { UrlMapper } from 'src/infrastructure/database/mappers/url.mapper';
-import { GetUrlByShortCodeRepositoryInterface } from 'src/core/domain/repositories/get-url-by-shortcode-repository.interface';
-import { GetUrlByShortCodeRepositoryService } from 'src/infrastructure/database/repositories/url/get-url-by-shortcode-repository.service';
+import { DomainError } from 'src/core/errors/domain-error';
 
 describe('GetUrlByShortCodeRepositoryService', () => {
   const expectedCreatedAt = Date.now();
@@ -31,6 +38,7 @@ describe('GetUrlByShortCodeRepositoryService', () => {
 
   beforeEach(async () => {
     jest.spyOn(Date, 'now').mockReturnValue(expectedCreatedAt);
+    jest.spyOn(console, 'error').mockImplementation(() => ({ log: jest.fn() }) as any);
 
     const initialData = {
       id: 'd5d46e22-f1cc-4991-b461-b17a316ca545',
@@ -66,5 +74,9 @@ describe('GetUrlByShortCodeRepositoryService', () => {
     expect(url?.id).toBe('d5d46e22-f1cc-4991-b461-b17a316ca545');
     expect(url?.shortCode).toBe('123456');
     expect(url?.originalUrl).toBe('https://www.google.com');
+  });
+
+  it('should throw an error when the url is not found', async () => {
+    await expect(getUrlByShortCodeRepository.findByShortCode('invalid-short-code')).rejects.toBeInstanceOf(DomainError);
   });
 });

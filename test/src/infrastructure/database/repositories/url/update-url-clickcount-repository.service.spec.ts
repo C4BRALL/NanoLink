@@ -32,7 +32,7 @@ describe('UpdateUrlRepositoryService', () => {
 
   beforeEach(async () => {
     jest.spyOn(Date, 'now').mockReturnValue(expectedCreatedAt);
-    jest.spyOn(console, 'error').mockImplementation(() => ({ log: jest.fn() }) as any)
+    jest.spyOn(console, 'error').mockImplementation(() => ({ log: jest.fn() }) as any);
 
     const seedDB = [
       {
@@ -83,10 +83,6 @@ describe('UpdateUrlRepositoryService', () => {
       deletedAt: new Date(deletedData.deletedAt),
     });
 
-    await expect(
-      _updateUrlRepository.update(url)
-    )
-      .rejects
-      .toBeInstanceOf(DomainError);
+    await expect(_updateUrlRepository.update(url)).rejects.toBeInstanceOf(DomainError);
   });
 });

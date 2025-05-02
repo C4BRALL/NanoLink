@@ -5,10 +5,14 @@ import { GetUrlByShortCodeRepositoryService } from 'src/infrastructure/database/
 import { DatabaseErrorHandler } from 'src/infrastructure/database/utils/db-error-handler';
 import { configureDbDriverMock } from '../../../../_mocks_/configure-db-driver-mock';
 import { UrlEntity } from 'src/core/domain/entities/url.entity';
+import { UpdateUrlClickCountRepositoryInterface } from 'src/core/domain/repositories/update-url-clickcount-repository.interface';
+import { UpdateUrlClickCountRepositoryService } from 'src/infrastructure/database/repositories/url/update-url-clickcount-repository.service';
+import { UrlRetrievalFailedError } from 'src/core/use-cases/errors/url-error';
 
 describe('GetUrlByShortCodeService', () => {
   let _getUrlByShortCodeService: GetUrlByShortCodeInterface;
   let _urlRepository: GetUrlByShortCodeRepositoryInterface;
+  let _updateUrlRepository: UpdateUrlClickCountRepositoryInterface;
   const expectedCreatedAt = Date.now();
   let mockRepository: any;
   const initialData = {
@@ -34,7 +38,8 @@ describe('GetUrlByShortCodeService', () => {
     mockRepository = spies.Repository;
 
     _urlRepository = new GetUrlByShortCodeRepositoryService(mockRepository, new DatabaseErrorHandler());
-    _getUrlByShortCodeService = new GetUrlByShortCodeService(_urlRepository);
+    _updateUrlRepository = new UpdateUrlClickCountRepositoryService(mockRepository, new DatabaseErrorHandler());
+    _getUrlByShortCodeService = new GetUrlByShortCodeService(_urlRepository, _updateUrlRepository);
   });
 
   afterEach(async () => {
@@ -44,21 +49,20 @@ describe('GetUrlByShortCodeService', () => {
   it('should return the url when the short code is found', async () => {
     const result = await _getUrlByShortCodeService.execute({ shortCode: 'short1' });
 
-    expect(result.url).toBeDefined();
-    expect(result.url).toBeInstanceOf(UrlEntity);
-    expect(result.url?.id).toBeDefined();
-    expect(result.url?.originalUrl).toBe(initialData.originalUrl);
-    expect(result.url?.shortCode).toBe(initialData.shortCode);
-    expect(result.url?.userId).toBe(initialData.userId);
-    expect(result.url?.createdAt).toBeInstanceOf(Date);
-    expect(result.url?.updatedAt).toBeInstanceOf(Date);
-    expect(result.url?.clickCount).toBe(0);
-    expect(result.url?.isDeleted()).toBeFalsy();
-    expect(result.url?.deletedAt).toBeUndefined();
+    expect(result).toBeDefined();
+    expect(result).toBeInstanceOf(UrlEntity);
+    expect(result.id).toBeDefined();
+    expect(result.originalUrl).toBe(initialData.originalUrl);
+    expect(result.shortCode).toBe(initialData.shortCode);
+    expect(result.userId).toBe(initialData.userId);
+    expect(result.createdAt).toBeInstanceOf(Date);
+    expect(result.updatedAt).toBeInstanceOf(Date);
+    expect(result.clickCount).toBe(1);
+    expect(result.isDeleted()).toBeFalsy();
+    expect(result.deletedAt).toBeUndefined();
   });
 
-  it('should return null when the short code is not found', async () => {
-    const result = await _getUrlByShortCodeService.execute({ shortCode: 'inv123' });
-    expect(result.url).toBeNull();
+  it('should return a error when the short code is not found', async () => {
+    await expect(_getUrlByShortCodeService.execute({ shortCode: 'inv123' })).rejects.toBeInstanceOf(UrlRetrievalFailedError);
   });
 });
