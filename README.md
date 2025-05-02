@@ -1,98 +1,168 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# Nano Link - URL Shortener Service
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+A modern, scalable URL shortener service built with Node.js and NestJS, following Clean Architecture principles.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## 🚀 Features
 
-## Description
+- 🔐 User authentication with JWT
+- 🔗 URL shortening with custom aliases
+- 📊 Click tracking
+- 👤 User-specific URL management
+- 🛡️ Input validation and error handling
+- 📝 API documentation with Swagger
+- 🧪 Unit tests
+- 🐳 Docker support
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## 📋 Requirements
 
-## Project setup
+- Node.js (v22.15.0 or higher)
+- PostgreSQL
+- Docker (optional)
 
-```bash
-$ npm install
+## 🛠️ Tech Stack
+
+- **Framework**: NestJS
+- **Database**: PostgreSQL
+- **ORM**: TypeORM
+- **Authentication**: JWT
+- **Documentation**: Swagger/OpenAPI
+- **Testing**: Jest
+- **Containerization**: Docker
+
+## 🏗️ Architecture
+
+The project follows Clean Architecture principles with the following structure:
+
+```
+src/
+├── core/                  # Core business logic
+│   ├── domain/            # Domain entities and interfaces
+│   ├── use-cases/         # Application use cases
+│   └── errors/            # Custom error handling
+├── infrastructure/        # External concerns
+│   ├── database/          # Database configuration
+│   ├── auth/              # Authentication
+│   └── config/            # Environment configuration
+├── interface/             # Presentation layer
+│   ├── controllers/       # Controllers
+│   ├── dtos/              # DTOs
+│   └── middlewares/       # Middlewares
+│
+└── main.ts                # Application entry point
 ```
 
-## Compile and run the project
+## 🚀 Getting Started
 
+### Prerequisites
+
+1. Install Node.js (v22.15.0 or higher)
+2. Install PostgreSQL
+3. Install Docker (optional)
+
+### Installation
+
+1. Clone the repository:
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+git clone https://github.com/C4BRALL/NanoLink.git
+cd nano-link
 ```
 
-## Run tests
-
+2. Install dependencies:
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+npm install
 ```
 
-## Deployment
-
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
-
+3. Set up environment variables:
 ```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+cp .env.example .env
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+4. Configure your environment variables in `.env`:
+```env
+API_PORT=3030                       #your api port
+API_DOMAIN=http://localhost:3030    #your api domain, used to redirect short urls
+JWT_SECRET=secretKey                #Secret key for JWT
+DB_HOST=localhost                   #your database host
+DB_PORT=5432                        #your database port
+DB_USERNAME=admin                   #your database user
+DB_PASSWORD=secret                  #your database password
+DB_NAME=nano_link                   #your database name
+DB_LOGGING=true                     #set to logging DB transactions
+DB_TYPEORM_SYNC=true                #Set to synchronizing indicates whether the database schema should be automatically created on every application launch
+```
 
-## Resources
+### Running the Application
 
-Check out a few resources that may come in handy when working with NestJS:
+#### Development Mode
+```bash
+npm run start:dev
+```
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+#### Production Mode
+```bash
+npm run build
+npm run start:prod
+```
 
-## Support
+#### Using Docker
+```bash
+docker-compose up -d
+```
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+## 📚 API Documentation
 
-## Stay in touch
+Once the application is running, access the Swagger documentation at:
+```
+http://localhost:{API_PORT}/api/docs
+```
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+## 🧪 Running Tests
 
-## License
+```bash
+# Unit tests
+npm run test
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+# Test coverage
+npm run test:cov
+```
+
+## 🔧 Environment Variables
+
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `API_PORT` | Application port | 3030 |
+| `JWT_SECRET` | Secret key for JWT | - |
+| `API_DOMAIN` | Domain, used to redirect short urls | http://localhost:{API_PORT} |
+| `DB_HOST` | Postgres DB host | localhost |
+| `DB_PORT` | Postgres DB port | 5432 |
+| `DB_USERNAME` | Postgres DB username | admin |
+| `DB_PASSWORD` | Postgres DB password | secret |
+| `DB_NAME` | Postgres DB name | nano_link |
+| `DB_LOGGING` | Logger DB transactions (true/false) | true |
+| `DB_TYPEORM_SYNC` | Set to synchronizing indicates whether the database schema should be automatically created on every application launch (true/false) | false |
+| `NODE_ENV` | Environment (development/production) | development |
+
+## 📈 Scaling Considerations
+
+The system is designed for vertical scaling. Key considerations for horizontal scaling:
+
+1. **Database**: Implement read replicas and connection pooling
+2. **Caching**: Add Redis for caching frequently accessed URLs
+3. **Load Balancing**: Use a load balancer for distributing traffic
+4. **Monitoring**: Implement comprehensive monitoring and logging
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## 📝 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 📞 Contact
+
+For any questions or suggestions, please open an issue in the repository.

@@ -1,7 +1,10 @@
 import { Module } from '@nestjs/common';
-import { UrlController } from './controllers/url/url.controller';
+import { CreateUrlController } from './controllers/url/create-url.controller';
+import { UseCasesModule } from 'src/core/use-cases/use-cases.module';
+import { ShortUrlController } from './controllers/url/short-url.controller';
 
 @Module({
-  controllers: [UrlController],
+  imports: [UseCasesModule],
+  controllers: [CreateUrlController, ShortUrlController],
 })
 export class InterfaceModule {}

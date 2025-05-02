@@ -1,11 +1,24 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
+import { SwaggerConfigService } from './infrastructure/documentation/swagger/swagger-config/swagger-config.service';
+import { EnvironmentConfigService } from './infrastructure/config/environment-config/environment-config.service';
+import { HttpExceptionFilter } from './interface/error-handling/http-exception.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  await app.listen(process.env.API_PORT ?? 3000).then(() => {
+
+  app.useGlobalFilters(new HttpExceptionFilter());
+
+  const environmentConfigService = app.get(EnvironmentConfigService);
+
+  const swaggerService = app.get(SwaggerConfigService);
+
+  swaggerService.setup(app);
+
+  await app.listen(environmentConfigService.get('API_PORT') ?? 3000).then(() => {
     console.table({
-      url: `http://localhost:${process.env.API_PORT ?? 3000}`,
+      url: `http://localhost:${environmentConfigService.get('API_PORT') ?? 3000}`,
+      swagger: `http://localhost:${environmentConfigService.get('API_PORT') ?? 3000}/api/docs`,
     });
   });
 }
