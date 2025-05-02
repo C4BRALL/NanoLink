@@ -12,6 +12,7 @@ export async function configureDbDriverMock(initialData = [{ data: [{}] }]) {
           id: ((item as any).id as string) || 'e1303f47-863a-4f6d-8d52-01e4db678751',
           shortCode: ((item as any).shortCode as string) || 'def123',
           originalUrl: ((item as any).originalUrl as string) || 'http://example.com',
+          clickCount: ((item as any).clickCount as number) || 0,
           userId: ((item as any).userId as string) || undefined,
           createdAt: new Date((item as any).createdAt) || new Date(),
           updatedAt: new Date((item as any).updatedAt) || new Date(),
@@ -46,7 +47,15 @@ export async function configureDbDriverMock(initialData = [{ data: [{}] }]) {
       );
     }),
     delete: jest.fn(),
-    update: jest.fn(),
+    update: jest.fn((criteria: string | string[] | number | number[] | Date | Date[], partialEntity: Partial<UrlEntity>) => {
+      const data = seedDb();
+      const url = data.find((item) => item.id === criteria);
+      if (url) {
+        Object.assign(url, partialEntity);
+      }
+      const result = { raw: [url], affected: 1 };
+      return Promise.resolve(result);
+    }),
   } as unknown as Repository<UrlModel>;
 
   const spies = {
