@@ -23,7 +23,7 @@ export class CreateUrlService implements CreateUrlInterface {
 
       await this.urlRepository.save(url);
 
-      return { url, link: `${this.environmentConfig.get('DB_DOMAIN') || 'http://localhost:3000'}/${url.shortCode}` };
+      return { url, link: `${this.environmentConfig.get('API_DOMAIN') || 'http://localhost:3000'}/${url.shortCode}` };
     } catch (error) {
       if (error instanceof Error) {
         throw new UrlCreationFailedError(params.originalUrl, error);
