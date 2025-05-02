@@ -1,7 +1,6 @@
 import { UrlEntity } from 'src/core/domain/entities/url.entity';
-import { CreateUrlRepositoryInterface } from 'src/core/domain/repositories/create-url-repository.interface';
-import { CreateUrlRepositoryService } from 'src/infrastructure/database/repositories/url-repository/create-url-repository.service';
 import { configureDbDriverMock } from '../../../../../_mocks_/configure-db-driver-mock';
+import { DatabaseErrorHandler } from 'src/infrastructure/database/utils/db-error-handler';
 
 jest.mock('src/infrastructure/database/mappers/url.mapper', () => ({
   UrlMapper: {
@@ -22,17 +21,19 @@ jest.mock('src/infrastructure/database/mappers/url.mapper', () => ({
 }));
 
 import { UrlMapper } from 'src/infrastructure/database/mappers/url.mapper';
-import { DatabaseErrorHandler } from 'src/infrastructure/database/utils/db-error-handler';
+import { GetUrlByShortCodeRepositoryInterface } from 'src/core/domain/repositories/get-url-by-shortcode-repository.interface';
+import { GetUrlByShortCodeRepositoryService } from 'src/infrastructure/database/repositories/url/get-url-by-shortcode-repository.service';
 
-describe('CreateUrlRepositoryService', () => {
+describe('GetUrlByShortCodeRepositoryService', () => {
   const expectedCreatedAt = Date.now();
-  let createUrlRepository: CreateUrlRepositoryInterface;
+  let getUrlByShortCodeRepository: GetUrlByShortCodeRepositoryInterface;
   let mockRepository: any;
 
   beforeEach(async () => {
     jest.spyOn(Date, 'now').mockReturnValue(expectedCreatedAt);
 
     const initialData = {
+      id: 'd5d46e22-f1cc-4991-b461-b17a316ca545',
       originalUrl: 'https://www.google.com',
       shortCode: '123456',
       userId: 'fc32bc52-de79-4438-9cc8-3727d633cd1f',
@@ -49,23 +50,21 @@ describe('CreateUrlRepositoryService', () => {
     const spies = await configureDbDriverMock(seedDB);
     mockRepository = spies.Repository;
 
-    createUrlRepository = new CreateUrlRepositoryService(mockRepository, new DatabaseErrorHandler());
+    getUrlByShortCodeRepository = new GetUrlByShortCodeRepositoryService(mockRepository, new DatabaseErrorHandler());
   });
 
   afterEach(() => {
     jest.clearAllMocks();
   });
 
-  it('should save a url', async () => {
-    const url = new UrlEntity({
-      originalUrl: 'https://www.google.com',
-      shortCode: '123456',
-    });
+  it('should find a url by short code', async () => {
+    const url = await getUrlByShortCodeRepository.findByShortCode('123456');
 
-    await createUrlRepository.save(url);
-
-    expect(mockRepository.save).toHaveBeenCalled();
-    expect(UrlMapper.toPersistence).toHaveBeenCalledWith(url);
+    expect(mockRepository.findOne).toHaveBeenCalled();
     expect(UrlMapper.toDomain).toHaveBeenCalled();
+    expect(url).toBeInstanceOf(UrlEntity);
+    expect(url.id).toBe('d5d46e22-f1cc-4991-b461-b17a316ca545');
+    expect(url.shortCode).toBe('123456');
+    expect(url.originalUrl).toBe('https://www.google.com');
   });
 });

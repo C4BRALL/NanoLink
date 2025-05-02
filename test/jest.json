@@ -20,6 +20,7 @@
     "!src/**/*.module.ts",
     "!src/**/*-config*.ts",
     "!src/**/*.model.ts",
+    "!src/**/*error*.ts",
     "!src/**/*.entity.ts",
     "!src/**/index.ts",
     "!src/**/*.interface.ts",
