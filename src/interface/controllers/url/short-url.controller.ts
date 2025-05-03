@@ -59,7 +59,7 @@ export class ShortUrlController {
         result,
         statusCode: 302,
       });
-      return res.status(302).redirect(result.originalUrl);
+      res.status(302).redirect(result.originalUrl);
     } else {
       throw new NotFoundException(`URL with short code '${shortCode}' not found`);
     }

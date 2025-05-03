@@ -185,10 +185,10 @@ describe('HttpExceptionFilter', () => {
 
     filter.catch(exception, mockHost);
 
-    expect(mockStatus).toHaveBeenCalledWith(HttpStatus.BAD_REQUEST);
+    expect(mockStatus).toHaveBeenCalledWith(HttpStatus.CONFLICT);
     expect(mockJson).toHaveBeenCalledWith(
       expect.objectContaining({
-        statusCode: HttpStatus.BAD_REQUEST,
+        statusCode: HttpStatus.CONFLICT,
         message: 'Database error: A Email already exists with this value of email already exists',
         path: '/test-url',
       }),

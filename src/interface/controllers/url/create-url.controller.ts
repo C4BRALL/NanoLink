@@ -1,11 +1,11 @@
 import { Body, Controller, Post, Res } from '@nestjs/common';
-import { InvalidUserDataError } from 'src/core/errors/user-error';
 import { CreateUrlService } from 'src/core/use-cases/url/create-url.service';
 import { CreateUrlDto, CreateUrlSchema, CreateUrlDtoClass } from 'src/interface/dtos/url/create-url.dto';
 import { ApiTags, ApiOperation, ApiBody, ApiResponse } from '@nestjs/swagger';
 import { CreateUrlResponseSwagger } from 'src/infrastructure/documentation/swagger/swagger-config/url-swagger.models';
 import { ValidationErrorResponse } from 'src/infrastructure/documentation/swagger/swagger-config/error-swagger.models';
 import { Response } from 'express';
+import { UrlCreationFailedError } from 'src/core/errors/url-error';
 
 @ApiTags('URLs')
 @Controller('url')
@@ -51,7 +51,7 @@ export class CreateUrlController {
     if (!result.success) {
       const errorMessage = result.error.errors.map((err) => `${err.path.join('.')}: ${err.message}`).join(', ');
 
-      throw new InvalidUserDataError(errorMessage);
+      throw new UrlCreationFailedError(errorMessage);
     }
 
     const url = await this.createUrlService.execute({
@@ -59,6 +59,6 @@ export class CreateUrlController {
       userId: body.userId,
     });
 
-    return res.status(201).json(url);
+    res.status(201).json(url);
   }
 }
