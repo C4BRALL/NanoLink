@@ -12,7 +12,7 @@ export namespace CreateUserInterface {
   };
 
   export type Output = {
-    user: UserEntity;
+    user: Omit<UserEntity, 'id' | 'password' | 'softDelete' | 'restore' | 'update' | 'isDeleted' | 'getUserData'>;
     token: string;
   };
 }
