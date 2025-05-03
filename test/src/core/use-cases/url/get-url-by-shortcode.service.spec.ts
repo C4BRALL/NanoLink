@@ -1,5 +1,5 @@
 import { GetUrlByShortCodeRepositoryInterface } from 'src/core/domain/repositories/get-url-by-shortcode-repository.interface';
-import { GetUrlByShortCodeInterface } from 'src/core/domain/use-cases/get-url-by-shortcode.interface';
+import { GetUrlByShortCodeInterface } from 'src/core/domain/use-cases/url/get-url-by-shortcode.interface';
 import { GetUrlByShortCodeService } from 'src/core/use-cases/url/get-url-by-shortcode.service';
 import { GetUrlByShortCodeRepositoryService } from 'src/infrastructure/database/repositories/url/get-url-by-shortcode-repository.service';
 import { DatabaseErrorHandler } from 'src/infrastructure/database/utils/db-error-handler';

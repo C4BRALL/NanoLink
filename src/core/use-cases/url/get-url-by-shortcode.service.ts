@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { GetUrlByShortCodeRepositoryInterface } from 'src/core/domain/repositories/get-url-by-shortcode-repository.interface';
-import { GetUrlByShortCodeInterface } from 'src/core/domain/use-cases/get-url-by-shortcode.interface';
+import { GetUrlByShortCodeInterface } from 'src/core/domain/use-cases/url/get-url-by-shortcode.interface';
 import { UrlRetrievalFailedError } from '../errors/url-error';
 import { UrlEntity } from 'src/core/domain/entities/url.entity';
 import { UpdateUrlClickCountRepositoryInterface } from 'src/core/domain/repositories/update-url-clickcount-repository.interface';
