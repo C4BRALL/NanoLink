@@ -2,7 +2,7 @@ import { configureDbDriverMock } from '../../../../../_mocks_/configure-db-drive
 import { DatabaseErrorHandler } from 'src/infrastructure/database/utils/db-error-handler';
 import { UserEntity } from 'src/core/domain/entities/user.entity';
 import { CreateUserRepositoryInterface } from 'src/core/domain/repositories/user/create-user-repository.interface';
-import { CreateUserRepositoryService } from 'src/infrastructure/database/repositories/user-repository/create-user-repository.service';
+import { CreateUserRepositoryService } from 'src/infrastructure/database/repositories/user/create-user-repository.service';
 
 jest.mock('src/infrastructure/database/mappers/user.mapper', () => ({
   UserMapper: {

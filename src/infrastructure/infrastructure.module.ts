@@ -7,7 +7,7 @@ import { DatabaseErrorHandler } from './database/utils/db-error-handler';
 import { GetUrlByShortCodeRepositoryService } from './database/repositories/url/get-url-by-shortcode-repository.service';
 import { UpdateUrlClickCountRepositoryService } from './database/repositories/url/update-url-clickcount-repository.service';
 import { ConfigurationModule } from './config/config.module';
-import { CreateUserRepositoryService } from './database/repositories/user-repository/create-user-repository.service';
+import { CreateUserRepositoryService } from './database/repositories/user/create-user-repository.service';
 import { BcryptHashService } from './security/bcrypt-hash.service';
 import { UserModel } from './database/models/user.model';
 
