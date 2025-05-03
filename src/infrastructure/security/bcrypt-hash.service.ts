@@ -8,4 +8,8 @@ export class BcryptHashService implements HashInterface {
     const rounds = Number(process.env.BCRYPT_SALT_ROUNDS) || 6;
     return bcrypt.hash(plain, rounds);
   }
+
+  async compare(plain: string, hashedString: string): Promise<boolean> {
+    return bcrypt.compare(plain, hashedString);
+  }
 }
