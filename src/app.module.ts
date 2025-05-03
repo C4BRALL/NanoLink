@@ -9,16 +9,7 @@ import { InfrastructureModule } from './infrastructure/infrastructure.module';
 import { LoggerModule } from './infrastructure/logger/logger.module';
 
 @Module({
-  imports: [
-    DomainModule,
-    UseCasesModule,
-    DatabaseModule,
-    AuthModule,
-    InterfaceModule,
-    DocumentationModule,
-    InfrastructureModule,
-    LoggerModule,
-  ],
+  imports: [DomainModule, UseCasesModule, DatabaseModule, InterfaceModule, DocumentationModule, InfrastructureModule, LoggerModule],
   controllers: [],
   providers: [],
 })

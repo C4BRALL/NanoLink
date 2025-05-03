@@ -3,9 +3,10 @@ import { CreateUrlController } from './controllers/url/create-url.controller';
 import { UseCasesModule } from 'src/core/use-cases/use-cases.module';
 import { ShortUrlController } from './controllers/url/short-url.controller';
 import { InfrastructureModule } from 'src/infrastructure/infrastructure.module';
+import { CreateUserController } from './controllers/user/create-user.controller';
 
 @Module({
   imports: [UseCasesModule, InfrastructureModule],
-  controllers: [CreateUrlController, ShortUrlController],
+  controllers: [CreateUrlController, ShortUrlController, CreateUserController],
 })
 export class InterfaceModule {}
