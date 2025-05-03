@@ -1,5 +1,5 @@
 import { UrlEntity } from 'src/core/domain/entities/url.entity';
-import { CreateUrlRepositoryInterface } from 'src/core/domain/repositories/create-url-repository.interface';
+import { CreateUrlRepositoryInterface } from 'src/core/domain/repositories/url/create-url-repository.interface';
 import { CreateUrlRepositoryService } from 'src/infrastructure/database/repositories/url/create-url-repository.service';
 import { configureDbDriverMock } from '../../../../../_mocks_/configure-db-driver-mock';
 

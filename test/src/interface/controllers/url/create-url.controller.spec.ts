@@ -1,4 +1,4 @@
-import { CreateUrlRepositoryInterface } from 'src/core/domain/repositories/create-url-repository.interface';
+import { CreateUrlRepositoryInterface } from 'src/core/domain/repositories/url/create-url-repository.interface';
 import { CreateUrlService } from 'src/core/use-cases/url/create-url.service';
 import { CreateUrlRepositoryService } from 'src/infrastructure/database/repositories/url/create-url-repository.service';
 import { CreateUrlController } from 'src/interface/controllers/url/create-url.controller';

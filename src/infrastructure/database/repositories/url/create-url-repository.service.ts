@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { UrlEntity } from 'src/core/domain/entities/url.entity';
-import { CreateUrlRepositoryInterface } from 'src/core/domain/repositories/create-url-repository.interface';
+import { CreateUrlRepositoryInterface } from 'src/core/domain/repositories/url/create-url-repository.interface';
 import { UrlMapper } from '../../mappers/url.mapper';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';

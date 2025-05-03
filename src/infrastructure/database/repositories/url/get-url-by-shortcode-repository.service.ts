@@ -5,7 +5,7 @@ import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UrlModel } from '../../models/url.model';
 import { DatabaseErrorHandler } from '../../utils/db-error-handler';
-import { GetUrlByShortCodeRepositoryInterface } from 'src/core/domain/repositories/get-url-by-shortcode-repository.interface';
+import { GetUrlByShortCodeRepositoryInterface } from 'src/core/domain/repositories/url/get-url-by-shortcode-repository.interface';
 
 @Injectable()
 export class GetUrlByShortCodeRepositoryService implements GetUrlByShortCodeRepositoryInterface {

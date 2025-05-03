@@ -1,7 +1,7 @@
 import { UrlEntity } from 'src/core/domain/entities/url.entity';
 import { configureDbDriverMock } from '../../../../../_mocks_/configure-db-driver-mock';
 import { DatabaseErrorHandler } from 'src/infrastructure/database/utils/db-error-handler';
-import { GetUrlByShortCodeRepositoryInterface } from 'src/core/domain/repositories/get-url-by-shortcode-repository.interface';
+import { GetUrlByShortCodeRepositoryInterface } from 'src/core/domain/repositories/url/get-url-by-shortcode-repository.interface';
 import { GetUrlByShortCodeRepositoryService } from 'src/infrastructure/database/repositories/url/get-url-by-shortcode-repository.service';
 
 jest.mock('src/infrastructure/database/mappers/url.mapper', () => ({

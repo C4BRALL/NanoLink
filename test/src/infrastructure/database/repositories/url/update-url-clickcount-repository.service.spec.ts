@@ -1,7 +1,7 @@
 import { UrlEntity } from 'src/core/domain/entities/url.entity';
 import { DatabaseErrorHandler } from 'src/infrastructure/database/utils/db-error-handler';
 import { configureDbDriverMock } from '../../../../../_mocks_/configure-db-driver-mock';
-import { UpdateUrlClickCountRepositoryInterface } from 'src/core/domain/repositories/update-url-clickcount-repository.interface';
+import { UpdateUrlClickCountRepositoryInterface } from 'src/core/domain/repositories/url/update-url-clickcount-repository.interface';
 import { UpdateUrlClickCountRepositoryService } from 'src/infrastructure/database/repositories/url/update-url-clickcount-repository.service';
 import { DomainError } from 'src/core/errors/domain-error';
 

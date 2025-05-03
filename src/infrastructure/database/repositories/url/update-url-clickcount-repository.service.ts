@@ -4,7 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { DatabaseErrorHandler } from '../../utils/db-error-handler';
 import { UrlEntity } from 'src/core/domain/entities/url.entity';
-import { UpdateUrlClickCountRepositoryInterface } from 'src/core/domain/repositories/update-url-clickcount-repository.interface';
+import { UpdateUrlClickCountRepositoryInterface } from 'src/core/domain/repositories/url/update-url-clickcount-repository.interface';
 
 @Injectable()
 export class UpdateUrlClickCountRepositoryService implements UpdateUrlClickCountRepositoryInterface {
