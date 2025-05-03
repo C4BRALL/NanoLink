@@ -13,6 +13,8 @@ export const environmentConfigSchema = z.object({
   LOGTAIL_TOKEN: z.string().min(1),
   NODE_ENV: z.string().min(1),
   LOGTAIL_ENDPOINT: z.string().min(1),
+  JWT_SECRET: z.string().min(1).default('secret'),
+  JWT_EXPIRES_IN: z.string().min(1).default('15m'),
 });
 
 export type environmentConfigSchema = z.infer<typeof environmentConfigSchema>;
