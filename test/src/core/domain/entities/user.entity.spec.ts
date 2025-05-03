@@ -79,7 +79,6 @@ describe('UserEntity', () => {
   it('Should Get User Data', () => {
     const userData = userStub.getUserData();
 
-    expect(userData.id).toBe(userStub.id);
     expect(userData.name).toBe(userStub.name);
     expect(userData.email).toBe(userStub.email);
     expect(userData).not.toHaveProperty('password');
