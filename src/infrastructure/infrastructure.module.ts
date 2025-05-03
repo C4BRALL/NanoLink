@@ -10,6 +10,7 @@ import { ConfigurationModule } from './config/config.module';
 import { CreateUserRepositoryService } from './database/repositories/user/create-user-repository.service';
 import { BcryptHashService } from './security/bcrypt-hash.service';
 import { UserModel } from './database/models/user.model';
+import { GetUserByEmailRepositoryService } from './database/repositories/user/get-user-by-email-repository.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([UrlModel, UserModel]), ConfigurationModule, LoggerModule],
@@ -34,14 +35,19 @@ import { UserModel } from './database/models/user.model';
       provide: 'HashInterface',
       useClass: BcryptHashService,
     },
+    {
+      provide: 'GetUserByEmailRepositoryInterface',
+      useClass: GetUserByEmailRepositoryService,
+    },
     DatabaseErrorHandler,
   ],
   exports: [
+    'HashInterface',
     'CreateUrlRepositoryInterface',
     'GetUrlByShortCodeRepositoryInterface',
     'UpdateUrlClickCountRepositoryInterface',
     'CreateUserRepositoryInterface',
-    'HashInterface',
+    'GetUserByEmailRepositoryInterface',
     DatabaseErrorHandler,
     LoggerModule,
   ],
