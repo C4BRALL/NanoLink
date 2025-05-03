@@ -68,21 +68,17 @@ describe('WinstonLoggerService', () => {
     jest.clearAllMocks();
   });
 
-  it('deve ser definido', () => {
-    expect(service).toBeDefined();
-  });
-
-  it('deve inicializar o logger sem Logtail quando o token não é fornecido', () => {
+  it('Should initialize the logger without Logtail when the token is not provided', () => {
     expect(winston.createLogger).toHaveBeenCalled();
     expect(winston.transports.Console).toHaveBeenCalled();
   });
 
-  it('deve inicializar o logger com Logtail quando o token é fornecido', () => {
+  it('Should initialize the logger with Logtail when the token is provided', () => {
     jest.clearAllMocks();
     mockConfigService.get.mockImplementation((key: string) => {
       const config: Record<string, string> = {
         NODE_ENV: 'test',
-        LOGTAIL_TOKEN: 'token-teste',
+        LOGTAIL_TOKEN: 'token-test',
         LOGTAIL_ENDPOINT: 'https://logtail.com',
       };
       return config[key];
@@ -94,13 +90,13 @@ describe('WinstonLoggerService', () => {
     expect(winston.transports.Console).toHaveBeenCalled();
   });
 
-  it('deve configurar o LoggerHelper no onModuleInit', () => {
+  it('Should configure the LoggerHelper in onModuleInit', () => {
     service.onModuleInit();
     expect(LoggerHelper.setLogger).toHaveBeenCalledWith(service);
     expect(LoggerHelper.info).toHaveBeenCalledWith('Logger initialized', 'WinstonLoggerService');
   });
 
-  describe('métodos de logging', () => {
+  describe('Logging methods', () => {
     let loggerMock: {
       debug: jest.Mock;
       info: jest.Mock;
@@ -113,66 +109,66 @@ describe('WinstonLoggerService', () => {
       jest.spyOn(service, 'flush').mockImplementation(() => Promise.resolve());
     });
 
-    it('deve chamar logger.debug com os parâmetros corretos', () => {
-      service.debug('mensagem de teste', 'contexto-teste', { meta: 'teste' });
-      expect(loggerMock.debug).toHaveBeenCalledWith('mensagem de teste', {
-        context: 'contexto-teste',
-        meta: 'teste',
+    it('Should call logger.debug with the correct parameters', () => {
+      service.debug('test message', 'context', { meta: 'test' });
+      expect(loggerMock.debug).toHaveBeenCalledWith('test message', {
+        context: 'context',
+        meta: 'test',
       });
       expect(service.flush).toHaveBeenCalled();
     });
 
-    it('deve chamar logger.info com os parâmetros corretos', () => {
-      service.info('mensagem de teste', 'contexto-teste', { meta: 'teste' });
-      expect(loggerMock.info).toHaveBeenCalledWith('mensagem de teste', {
-        context: 'contexto-teste',
-        meta: 'teste',
+    it('Should call logger.info with the correct parameters', () => {
+      service.info('test message', 'context', { meta: 'test' });
+      expect(loggerMock.info).toHaveBeenCalledWith('test message', {
+        context: 'context',
+        meta: 'test',
       });
       expect(service.flush).toHaveBeenCalled();
     });
 
-    it('deve chamar logger.warn com os parâmetros corretos', () => {
-      service.warn('mensagem de teste', 'contexto-teste', { meta: 'teste' });
-      expect(loggerMock.warn).toHaveBeenCalledWith('mensagem de teste', {
-        context: 'contexto-teste',
-        meta: 'teste',
+    it('Should call logger.warn with the correct parameters', () => {
+      service.warn('test message', 'context', { meta: 'test' });
+      expect(loggerMock.warn).toHaveBeenCalledWith('test message', {
+        context: 'context',
+        meta: 'test',
       });
       expect(service.flush).toHaveBeenCalled();
     });
 
-    it('deve chamar logger.error com os parâmetros corretos', () => {
-      const erro = new Error('erro de teste');
-      service.error('mensagem de teste', 'contexto-teste', erro, { meta: 'teste' });
-      expect(loggerMock.error).toHaveBeenCalledWith('mensagem de teste', {
-        context: 'contexto-teste',
+    it('Should call logger.error with the correct parameters', () => {
+      const erro = new Error('test error');
+      service.error('test message', 'context', erro, { meta: 'test' });
+      expect(loggerMock.error).toHaveBeenCalledWith('test message', {
+        context: 'context',
         error: {
           message: erro.message,
           stack: erro.stack,
           name: erro.name,
         },
-        meta: 'teste',
+        meta: 'test',
       });
       expect(service.flush).toHaveBeenCalled();
     });
 
-    it('deve chamar logger.error sem o objeto de erro quando não é fornecido', () => {
-      service.error('mensagem de teste', 'contexto-teste', undefined, { meta: 'teste' });
-      expect(loggerMock.error).toHaveBeenCalledWith('mensagem de teste', {
-        context: 'contexto-teste',
+    it('Should call logger.error without the error object when it is not provided', () => {
+      service.error('test message', 'context', undefined, { meta: 'test' });
+      expect(loggerMock.error).toHaveBeenCalledWith('test message', {
+        context: 'context',
         error: undefined,
-        meta: 'teste',
+        meta: 'test',
       });
       expect(service.flush).toHaveBeenCalled();
     });
   });
 
-  describe('método flush', () => {
-    it('deve retornar Promise.resolve quando não há logtail', async () => {
+  describe('flush method', () => {
+    it('Should return Promise.resolve when there is no logtail', async () => {
       const result = await service.flush();
       expect(result).toBeUndefined();
     });
 
-    it('deve chamar logtail.flush quando logtail está disponível', async () => {
+    it('Should call logtail.flush when logtail is available', async () => {
       jest.clearAllMocks();
       mockConfigService.get.mockImplementation((key: string) => {
         const config: Record<string, string> = {

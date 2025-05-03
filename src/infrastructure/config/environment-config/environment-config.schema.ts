@@ -10,6 +10,9 @@ export const environmentConfigSchema = z.object({
   DB_LOGGING: z.coerce.boolean().default(false),
   API_DOMAIN: z.string().url().min(1),
   DB_TYPEORM_SYNC: z.coerce.boolean().default(false),
+  LOGTAIL_TOKEN: z.string().min(1),
+  NODE_ENV: z.string().min(1),
+  LOGTAIL_ENDPOINT: z.string().min(1),
 });
 
 export type environmentConfigSchema = z.infer<typeof environmentConfigSchema>;
