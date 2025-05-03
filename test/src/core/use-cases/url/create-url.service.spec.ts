@@ -30,7 +30,7 @@ describe('CreateUrlService', () => {
       },
     ];
 
-    const spies = await configureDbDriverMock(seedDB);
+    const spies = await configureDbDriverMock(seedDB, 'url');
     mockRepository = spies.Repository;
     _urlRepository = new CreateUrlRepositoryService(mockRepository, new DatabaseErrorHandler());
     _createUrlService = new CreateUrlService(_urlRepository, new EnvironmentConfigService(new ConfigService()));

@@ -34,7 +34,7 @@ describe('GetUrlByShortCodeService', () => {
       },
     ];
 
-    const spies = await configureDbDriverMock(seedDB);
+    const spies = await configureDbDriverMock(seedDB, 'url');
     mockRepository = spies.Repository;
 
     _urlRepository = new GetUrlByShortCodeRepositoryService(mockRepository, new DatabaseErrorHandler());

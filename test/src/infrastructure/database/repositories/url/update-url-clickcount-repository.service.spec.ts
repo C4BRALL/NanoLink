@@ -40,7 +40,7 @@ describe('UpdateUrlRepositoryService', () => {
       },
     ];
 
-    const spies = await configureDbDriverMock(seedDB);
+    const spies = await configureDbDriverMock(seedDB, 'url');
     mockRepository = spies.Repository;
 
     _updateUrlRepository = new UpdateUrlClickCountRepositoryService(mockRepository, new DatabaseErrorHandler());

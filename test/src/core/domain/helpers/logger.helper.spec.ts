@@ -30,7 +30,7 @@ describe('LoggerHelper', () => {
   });
 
   describe('setLogger', () => {
-    it('deve configurar o logger corretamente', () => {
+    it('Should set the logger', () => {
       LoggerHelper.setLogger(mockLogger);
 
       // @ts-ignore
@@ -39,9 +39,9 @@ describe('LoggerHelper', () => {
   });
 
   describe('quando o logger não está configurado', () => {
-    it('deve usar console.debug quando o método debug é chamado', () => {
-      const message = 'mensagem de debug';
-      const context = 'contexto-teste';
+    it('Should use console.debug when the debug method is called', () => {
+      const message = 'debug message';
+      const context = 'context-test';
       const meta = { test: 'meta' };
 
       LoggerHelper.debug(message, context, meta);
@@ -49,9 +49,9 @@ describe('LoggerHelper', () => {
       expect(consoleDebugSpy).toHaveBeenCalledWith(`[DEBUG] [${context}]: ${message}`, meta);
     });
 
-    it('deve usar console.info quando o método info é chamado', () => {
-      const message = 'mensagem de info';
-      const context = 'contexto-teste';
+    it('Should use console.info when the info method is called', () => {
+      const message = 'info message';
+      const context = 'context-test';
       const meta = { test: 'meta' };
 
       LoggerHelper.info(message, context, meta);
@@ -59,9 +59,9 @@ describe('LoggerHelper', () => {
       expect(consoleInfoSpy).toHaveBeenCalledWith(`[INFO] [${context}]: ${message}`, meta);
     });
 
-    it('deve usar console.warn quando o método warn é chamado', () => {
-      const message = 'mensagem de warn';
-      const context = 'contexto-teste';
+    it('Should use console.warn when the warn method is called', () => {
+      const message = 'warn message';
+      const context = 'context-test';
       const meta = { test: 'meta' };
 
       LoggerHelper.warn(message, context, meta);
@@ -69,10 +69,10 @@ describe('LoggerHelper', () => {
       expect(consoleWarnSpy).toHaveBeenCalledWith(`[WARN] [${context}]: ${message}`, meta);
     });
 
-    it('deve usar console.error quando o método error é chamado', () => {
-      const message = 'mensagem de erro';
-      const context = 'contexto-teste';
-      const error = new Error('teste de erro');
+    it('Should use console.error when the error method is called', () => {
+      const message = 'error message';
+      const context = 'context-test';
+      const error = new Error('error test');
       const meta = { test: 'meta' };
 
       LoggerHelper.error(message, context, error, meta);
@@ -84,8 +84,8 @@ describe('LoggerHelper', () => {
       );
     });
 
-    it('deve usar "General" como contexto padrão quando o contexto não é fornecido', () => {
-      const message = 'mensagem sem contexto';
+    it('Should use "General" as the default context when the context is not provided', () => {
+      const message = 'message without context';
 
       LoggerHelper.debug(message);
 
@@ -93,14 +93,14 @@ describe('LoggerHelper', () => {
     });
   });
 
-  describe('quando o logger está configurado', () => {
+  describe('when the logger is configured', () => {
     beforeEach(() => {
       LoggerHelper.setLogger(mockLogger);
     });
 
-    it('deve chamar logger.debug quando o método debug é chamado', () => {
-      const message = 'mensagem de debug';
-      const context = 'contexto-teste';
+    it('Should call logger.debug when the debug method is called', () => {
+      const message = 'debug message';
+      const context = 'context-test';
       const meta = { test: 'meta' };
 
       LoggerHelper.debug(message, context, meta);
@@ -109,9 +109,9 @@ describe('LoggerHelper', () => {
       expect(consoleDebugSpy).not.toHaveBeenCalled();
     });
 
-    it('deve chamar logger.info quando o método info é chamado', () => {
-      const message = 'mensagem de info';
-      const context = 'contexto-teste';
+    it('Should call logger.info when the info method is called', () => {
+      const message = 'info message';
+      const context = 'context-test';
       const meta = { test: 'meta' };
 
       LoggerHelper.info(message, context, meta);
@@ -120,9 +120,9 @@ describe('LoggerHelper', () => {
       expect(consoleInfoSpy).not.toHaveBeenCalled();
     });
 
-    it('deve chamar logger.warn quando o método warn é chamado', () => {
-      const message = 'mensagem de warn';
-      const context = 'contexto-teste';
+    it('Should call logger.warn when the warn method is called', () => {
+      const message = 'warn message';
+      const context = 'context-test';
       const meta = { test: 'meta' };
 
       LoggerHelper.warn(message, context, meta);
@@ -131,10 +131,10 @@ describe('LoggerHelper', () => {
       expect(consoleWarnSpy).not.toHaveBeenCalled();
     });
 
-    it('deve chamar logger.error quando o método error é chamado', () => {
-      const message = 'mensagem de erro';
-      const context = 'contexto-teste';
-      const error = new Error('teste de erro');
+    it('Should call logger.error when the error method is called', () => {
+      const message = 'error message';
+      const context = 'context-test';
+      const error = new Error('error test');
       const meta = { test: 'meta' };
 
       LoggerHelper.error(message, context, error, meta);

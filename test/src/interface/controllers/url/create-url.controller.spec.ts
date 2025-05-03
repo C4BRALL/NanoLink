@@ -36,7 +36,7 @@ describe('CreateUrlController', () => {
       },
     ];
 
-    const spies = await configureDbDriverMock(seedDB);
+    const spies = await configureDbDriverMock(seedDB, 'url');
 
     mockRepository = spies.Repository;
 
