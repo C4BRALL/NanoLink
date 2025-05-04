@@ -50,7 +50,14 @@ export async function configureDbDriverMock(initialData: Array<{ data: any[] }> 
       _dbData.push(model);
       return Promise.resolve(model);
     }),
-    find: jest.fn(() => Promise.resolve(seedDb())),
+    find: jest.fn((options: any) => {
+      const data = seedDb();
+      if (entityType === 'url') {
+        return Promise.resolve(data.filter((item) => item.userId === options.where.userId));
+      } else {
+        return Promise.resolve(data);
+      }
+    }),
     findOne: jest.fn((options: any) => {
       const data = seedDb();
       if (entityType === 'url') {
