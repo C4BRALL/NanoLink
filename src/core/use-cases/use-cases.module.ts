@@ -8,6 +8,7 @@ import { GenerateTokenService } from './auth/generate-token.service';
 import { AuthModule } from 'src/infrastructure/auth/auth.module';
 import { AuthUserService } from './user/auth-user.service';
 import { GetAllUrlsByUserService } from './url/get-all-urls-by-user.service';
+import { DeleteUrlService } from './url/delete-url.service';
 
 @Module({
   imports: [InfrastructureModule, ConfigurationModule, AuthModule],
@@ -18,7 +19,16 @@ import { GetAllUrlsByUserService } from './url/get-all-urls-by-user.service';
     GenerateTokenService,
     AuthUserService,
     GetAllUrlsByUserService,
+    DeleteUrlService,
   ],
-  exports: [CreateUrlService, GetUrlByShortCodeService, CreateUserService, GenerateTokenService, AuthUserService, GetAllUrlsByUserService],
+  exports: [
+    CreateUrlService,
+    GetUrlByShortCodeService,
+    CreateUserService,
+    GenerateTokenService,
+    AuthUserService,
+    GetAllUrlsByUserService,
+    DeleteUrlService,
+  ],
 })
 export class UseCasesModule {}

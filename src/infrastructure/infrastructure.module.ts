@@ -12,6 +12,7 @@ import { BcryptHashService } from './security/bcrypt-hash.service';
 import { UserModel } from './database/models/user.model';
 import { GetUserByEmailRepositoryService } from './database/repositories/user/get-user-by-email-repository.service';
 import { GetAllUrlsByUserRepositoryService } from './database/repositories/url/get-all-urls-by-user-repository.service';
+import { DeleteUrlRepositoryService } from './database/repositories/url/delete-url-repository.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([UrlModel, UserModel]), ConfigurationModule, LoggerModule],
@@ -44,6 +45,10 @@ import { GetAllUrlsByUserRepositoryService } from './database/repositories/url/g
       provide: 'GetAllUrlsByUserRepositoryInterface',
       useClass: GetAllUrlsByUserRepositoryService,
     },
+    {
+      provide: 'DeleteUrlRepositoryInterface',
+      useClass: DeleteUrlRepositoryService,
+    },
     DatabaseErrorHandler,
   ],
   exports: [
@@ -54,6 +59,7 @@ import { GetAllUrlsByUserRepositoryService } from './database/repositories/url/g
     'CreateUserRepositoryInterface',
     'GetUserByEmailRepositoryInterface',
     'GetAllUrlsByUserRepositoryInterface',
+    'DeleteUrlRepositoryInterface',
     DatabaseErrorHandler,
     LoggerModule,
   ],

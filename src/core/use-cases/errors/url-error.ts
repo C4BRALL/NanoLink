@@ -13,3 +13,10 @@ export class UrlRetrievalFailedError extends ApplicationError {
     this.cause = cause;
   }
 }
+
+export class UrlDeletionFailedError extends ApplicationError {
+  constructor(shortCode: string, cause?: Error) {
+    super(`Failed to delete URL for short code "${shortCode}"`);
+    this.cause = cause;
+  }
+}

@@ -8,10 +8,18 @@ import { AuthController } from './controllers/user/auth.controller';
 import { GetAllUrlsByUserController } from './controllers/url/get-all-urls-by-user.controller';
 import { AuthGuard } from './guards/auth.guard';
 import { AuthModule } from 'src/infrastructure/auth/auth.module';
+import { DeleteUrlController } from './controllers/url/delete-url.controller';
 
 @Module({
   imports: [UseCasesModule, InfrastructureModule, AuthModule],
-  controllers: [CreateUrlController, ShortUrlController, CreateUserController, AuthController, GetAllUrlsByUserController],
+  controllers: [
+    CreateUrlController,
+    ShortUrlController,
+    CreateUserController,
+    AuthController,
+    GetAllUrlsByUserController,
+    DeleteUrlController,
+  ],
   providers: [AuthGuard],
 })
 export class InterfaceModule {}

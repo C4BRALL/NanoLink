@@ -6,6 +6,7 @@ import { EntityNotFoundError, QueryFailedError, EntityNotFoundError as TypeORMEn
 import { DatabaseError, DuplicateEntryError, InvalidRelationError } from 'src/core/errors/database-error';
 import { UrlCreationFailedError } from 'src/core/errors/url-error';
 import { ForbiddenResourceError, TokenInvalidError, TokenMissingError, UnauthorizedError } from 'src/core/errors/auth-error';
+import { UrlDeletionFailedError, UrlRetrievalFailedError } from 'src/core/use-cases/errors/url-error';
 
 @Catch()
 export class HttpExceptionFilter implements ExceptionFilter {
@@ -153,6 +154,14 @@ export class HttpExceptionFilter implements ExceptionFilter {
 
   private unwrapException(exception: unknown): unknown {
     if (exception instanceof UrlCreationFailedError && exception.cause) {
+      return this.unwrapException(exception.cause);
+    }
+
+    if (exception instanceof UrlDeletionFailedError && exception.cause) {
+      return this.unwrapException(exception.cause);
+    }
+
+    if (exception instanceof UrlRetrievalFailedError && exception.cause) {
       return this.unwrapException(exception.cause);
     }
 
