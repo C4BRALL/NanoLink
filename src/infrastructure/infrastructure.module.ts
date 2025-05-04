@@ -11,6 +11,7 @@ import { CreateUserRepositoryService } from './database/repositories/user/create
 import { BcryptHashService } from './security/bcrypt-hash.service';
 import { UserModel } from './database/models/user.model';
 import { GetUserByEmailRepositoryService } from './database/repositories/user/get-user-by-email-repository.service';
+import { GetAllUrlsByUserRepositoryService } from './database/repositories/url/get-all-urls-by-user-repository.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([UrlModel, UserModel]), ConfigurationModule, LoggerModule],
@@ -39,6 +40,10 @@ import { GetUserByEmailRepositoryService } from './database/repositories/user/ge
       provide: 'GetUserByEmailRepositoryInterface',
       useClass: GetUserByEmailRepositoryService,
     },
+    {
+      provide: 'GetAllUrlsByUserRepositoryInterface',
+      useClass: GetAllUrlsByUserRepositoryService,
+    },
     DatabaseErrorHandler,
   ],
   exports: [
@@ -48,6 +53,7 @@ import { GetUserByEmailRepositoryService } from './database/repositories/user/ge
     'UpdateUrlClickCountRepositoryInterface',
     'CreateUserRepositoryInterface',
     'GetUserByEmailRepositoryInterface',
+    'GetAllUrlsByUserRepositoryInterface',
     DatabaseErrorHandler,
     LoggerModule,
   ],
