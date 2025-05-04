@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { z } from 'zod';
 
 export const CreateUserSchema = z.object({
@@ -7,3 +8,30 @@ export const CreateUserSchema = z.object({
 });
 
 export type CreateUserDto = z.infer<typeof CreateUserSchema>;
+
+export class CreateUserDtoClass implements CreateUserDto {
+  @ApiProperty({
+    description: 'Name of the user',
+    example: 'John Doe',
+    type: String,
+    required: true,
+  })
+  name: string;
+
+  @ApiProperty({
+    description: 'Email address of the user',
+    example: 'user@gmail.com',
+    type: String,
+    required: true,
+  })
+  email: string;
+
+  @ApiProperty({
+    description: 'Password of the user',
+    example: 'password123',
+    type: String,
+    required: true,
+    minLength: 6,
+  })
+  password: string;
+}

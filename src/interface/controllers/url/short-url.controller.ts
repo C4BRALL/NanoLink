@@ -8,8 +8,6 @@ import {
 } from 'src/infrastructure/documentation/swagger/swagger-config/error-swagger.models';
 import { ShortUrlSchema } from 'src/interface/dtos/url/short-url.dto';
 import { InvalidShortCodeError } from 'src/core/errors/url-error';
-import { LoggerHelper } from 'src/core/domain/helpers/logger.helper';
-import { CreateUrlDtoClass } from 'src/interface/dtos/url/create-url.dto';
 
 @ApiTags('Redirection')
 @Controller()
@@ -53,12 +51,6 @@ export class ShortUrlController {
     const result = await this.getUrlByShortCodeService.execute({ shortCode: shortCodeSchema.data.shortCode });
 
     if (result && result.originalUrl) {
-      LoggerHelper.info('Received create URL request', 'UrlController', {
-        dto: CreateUrlDtoClass,
-        message: 'Redirecting to original URL',
-        result,
-        statusCode: 302,
-      });
       res.status(302).redirect(result.originalUrl);
     } else {
       throw new NotFoundException(`URL with short code '${shortCode}' not found`);
