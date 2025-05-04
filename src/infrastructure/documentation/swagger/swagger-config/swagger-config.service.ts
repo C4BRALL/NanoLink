@@ -4,7 +4,12 @@ import { INestApplication } from '@nestjs/common';
 import { CreateUrlDtoClass } from 'src/interface/dtos/url/create-url.dto';
 import { ShortUrlDtoClass } from 'src/interface/dtos/url/short-url.dto';
 import { ApiErrorResponse, NotFoundErrorResponse, ValidationErrorResponse } from '../swagger-config/error-swagger.models';
-import { CreateUrlResponseSwagger, DeleteUrlResponseSwagger, UrlEntitySwagger } from '../swagger-config/url-swagger.models';
+import {
+  CreateUrlResponseSwagger,
+  DeleteUrlResponseSwagger,
+  UpdateUrlResponseSwagger,
+  UrlEntitySwagger,
+} from '../swagger-config/url-swagger.models';
 import { LoginDtoClass } from 'src/interface/dtos/user/login-dto';
 import { CreateUserDtoClass } from 'src/interface/dtos/user/create-user.dto';
 import { CreateUserResponseSwagger, LoginResponseSwagger, UserEntitySwagger } from './user-swagger.models';
@@ -35,6 +40,7 @@ export class SwaggerConfigService {
         UrlEntitySwagger,
         CreateUrlResponseSwagger,
         DeleteUrlResponseSwagger,
+        UpdateUrlResponseSwagger,
         CreateUserResponseSwagger,
         LoginResponseSwagger,
         UserEntitySwagger,

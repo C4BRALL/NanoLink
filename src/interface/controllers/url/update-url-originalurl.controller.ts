@@ -1,10 +1,15 @@
 import { Body, Controller, Param, Put, Req, Res, UseGuards } from '@nestjs/common';
-import { ApiBearerAuth, ApiCookieAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiCookieAuth, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Request, Response } from 'express';
 import { InvalidShortCodeError } from 'src/core/errors/url-error';
 import { UpdateUrlOriginalUrlService } from 'src/core/use-cases/url/update-url-originalurl.service';
-import { UpdateUrlOriginalUrlDto, UpdateUrlOriginalUrlSchema } from 'src/interface/dtos/url/update-url-originalurl.dto';
+import { UpdateUrlOriginalUrlDtoClass, UpdateUrlOriginalUrlSchema } from 'src/interface/dtos/url/update-url-originalurl.dto';
 import { AuthGuard } from 'src/interface/guards/auth.guard';
+import { UpdateUrlResponseSwagger } from 'src/infrastructure/documentation/swagger/swagger-config/url-swagger.models';
+import {
+  NotFoundErrorResponse,
+  ValidationErrorResponse,
+} from 'src/infrastructure/documentation/swagger/swagger-config/error-swagger.models';
 
 @ApiTags('URLs')
 @Controller('url')
@@ -15,6 +20,30 @@ export class UpdateUrlOriginalUrlController {
   @ApiCookieAuth('token')
   @ApiBearerAuth()
   @Put('/:shortCode')
+  @ApiOperation({
+    summary: 'Update original URL',
+    description: 'Updates the original URL of a shortened URL. Only authenticated users can update URLs they own.',
+  })
+  @ApiParam({
+    name: 'shortCode',
+    required: true,
+    description: 'The short code of the URL to update',
+    type: String,
+    example: 'abc123',
+  })
+  @ApiBody({
+    type: UpdateUrlOriginalUrlDtoClass,
+    description: 'URL update data',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'URL updated successfully',
+    type: UpdateUrlResponseSwagger,
+  })
+  @ApiResponse({ status: 400, description: 'Invalid input data', type: ValidationErrorResponse })
+  @ApiResponse({ status: 401, description: 'Unauthorized - Missing or invalid token' })
+  @ApiResponse({ status: 403, description: 'Forbidden - User does not own this URL' })
+  @ApiResponse({ status: 404, description: 'URL not found', type: NotFoundErrorResponse })
   async updateUrlOriginalUrl(
     @Req() req: Request,
     @Param('shortCode') shortCode: string,
