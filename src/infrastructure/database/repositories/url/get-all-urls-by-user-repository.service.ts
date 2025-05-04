@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { UrlEntity } from 'src/core/domain/entities/url.entity';
 import { UrlMapper } from '../../mappers/url.mapper';
-import { Repository } from 'typeorm';
+import { IsNull, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UrlModel } from '../../models/url.model';
 import { DatabaseErrorHandler } from '../../utils/db-error-handler';
@@ -16,7 +16,7 @@ export class GetAllUrlsByUserRepositoryService implements GetAllUrlsByUserReposi
   ) {}
   async findAll(userId: string): Promise<UrlEntity[]> {
     try {
-      const urls = await this.urlRepository.find({ where: { userId } });
+      const urls = await this.urlRepository.find({ where: { userId, deletedAt: IsNull() } });
       return urls.map((url) => UrlMapper.toDomain(url));
     } catch (error) {
       throw this.errorHandler.handleError(error, 'URL');

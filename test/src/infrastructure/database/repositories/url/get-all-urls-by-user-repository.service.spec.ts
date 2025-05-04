@@ -31,6 +31,7 @@ jest.mock('src/infrastructure/database/mappers/url.mapper', () => ({
 }));
 
 import { UrlMapper } from 'src/infrastructure/database/mappers/url.mapper';
+import { IsNull } from 'typeorm';
 
 describe('GetAllUrlsByUserRepositoryService', () => {
   const expectedCreatedAt = Date.now();
@@ -93,7 +94,7 @@ describe('GetAllUrlsByUserRepositoryService', () => {
   it('should find all URLs for a specific user', async () => {
     const urls = await getAllUrlsByUserRepository.findAll(testUserId);
 
-    expect(mockRepository.find).toHaveBeenCalledWith({ where: { userId: testUserId } });
+    expect(mockRepository.find).toHaveBeenCalledWith({ where: { userId: testUserId, deletedAt: IsNull() } });
     expect(UrlMapper.toDomain).toHaveBeenCalledTimes(2);
     expect(urls).toHaveLength(2);
     expect(urls[0]).toBeInstanceOf(UrlEntity);
@@ -109,7 +110,7 @@ describe('GetAllUrlsByUserRepositoryService', () => {
 
     const urls = await getAllUrlsByUserRepository.findAll('user-with-no-urls');
 
-    expect(mockRepository.find).toHaveBeenCalledWith({ where: { userId: 'user-with-no-urls' } });
+    expect(mockRepository.find).toHaveBeenCalledWith({ where: { userId: 'user-with-no-urls', deletedAt: IsNull() } });
     expect(urls).toHaveLength(0);
     expect(urls).toEqual([]);
   });
