@@ -16,7 +16,7 @@ export class UpdateUrlOriginalUrlService implements UpdateUrlOriginalUrlInterfac
   async execute(params: UpdateUrlOriginalUrlInterface.Params): Promise<UrlEntity> {
     try {
       const url = await this.urlRepository.findByShortCode(params.shortCode);
-      
+
       if (!url.userId) {
         throw new UrlAccessDeniedError(params.shortCode, params.userId);
       }
@@ -24,7 +24,7 @@ export class UpdateUrlOriginalUrlService implements UpdateUrlOriginalUrlInterfac
       if (url.userId !== params.userId) {
         throw new UrlAccessDeniedError(params.shortCode, params.userId);
       }
-      
+
       url.update(params.originalUrl);
       await this.updateUrlOriginalUrlRepository.update(url);
       return url;

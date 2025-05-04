@@ -1,6 +1,6 @@
-import { Controller, Delete, Inject, Param, Res, UseGuards } from '@nestjs/common';
+import { Controller, Delete, Inject, Param, Req, Res, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiCookieAuth, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { Response } from 'express';
+import { Request, Response } from 'express';
 import { InvalidShortCodeError } from 'src/core/errors/url-error';
 import { DeleteUrlService } from 'src/core/use-cases/url/delete-url.service';
 import { DeleteUrlSchema } from 'src/interface/dtos/url/delete-url.dto';
@@ -40,13 +40,14 @@ export class DeleteUrlController {
   @ApiResponse({ status: 401, description: 'Unauthorized - Missing or invalid token' })
   @ApiResponse({ status: 403, description: 'Forbidden - User does not own this URL' })
   @ApiResponse({ status: 404, description: 'URL not found', type: NotFoundErrorResponse })
-  async deleteUrl(@Param('shortCode') shortCode: string, @Res() res: Response) {
+  async deleteUrl(@Req() req: Request, @Param('shortCode') shortCode: string, @Res() res: Response) {
+    const userId = (req as Request & { user: { userId: string } }).user.userId;
     const checkBody = DeleteUrlSchema.safeParse({ shortCode });
     if (!checkBody.success) {
       const errorMessage = checkBody.error.errors.map((err) => `${err.path.join('.')}: ${err.message}`).join(', ');
       throw new InvalidShortCodeError(errorMessage);
     }
-    const url = await this.deleteUrlService.execute({ shortCode });
+    const url = await this.deleteUrlService.execute({ shortCode: checkBody.data.shortCode, userId });
     res.status(200).json({
       message: 'URL deleted successfully',
       shortCode: url.shortCode,
