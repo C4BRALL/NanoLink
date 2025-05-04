@@ -1,4 +1,4 @@
-import { UrlEntity } from '../entities/url.entity';
+import { UrlEntity } from '../../entities/url.entity';
 
 export interface CreateUrlInterface {
   execute(url: CreateUrlInterface.Params): Promise<CreateUrlInterface.Output>;

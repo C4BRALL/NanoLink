@@ -7,7 +7,7 @@ export const userEntitySchema = z.object({
   password: z.string({ required_error: 'Password is required' }).min(6, { message: 'Password must be at least 6 character long' }),
   createdAt: z.date().optional(),
   updatedAt: z.date().optional(),
-  deletedAt: z.date().optional(),
+  deletedAt: z.date().nullable().optional(),
 });
 
 export type UserEntitySchema = z.infer<typeof userEntitySchema>;

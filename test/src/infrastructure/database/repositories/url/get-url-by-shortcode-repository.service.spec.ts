@@ -1,8 +1,9 @@
 import { UrlEntity } from 'src/core/domain/entities/url.entity';
 import { configureDbDriverMock } from '../../../../../_mocks_/configure-db-driver-mock';
 import { DatabaseErrorHandler } from 'src/infrastructure/database/utils/db-error-handler';
-import { GetUrlByShortCodeRepositoryInterface } from 'src/core/domain/repositories/get-url-by-shortcode-repository.interface';
+import { GetUrlByShortCodeRepositoryInterface } from 'src/core/domain/repositories/url/get-url-by-shortcode-repository.interface';
 import { GetUrlByShortCodeRepositoryService } from 'src/infrastructure/database/repositories/url/get-url-by-shortcode-repository.service';
+import { DomainError } from 'src/core/errors/domain-error';
 
 jest.mock('src/infrastructure/database/mappers/url.mapper', () => ({
   UrlMapper: {
@@ -29,7 +30,6 @@ jest.mock('src/infrastructure/database/mappers/url.mapper', () => ({
 }));
 
 import { UrlMapper } from 'src/infrastructure/database/mappers/url.mapper';
-import { DomainError } from 'src/core/errors/domain-error';
 
 describe('GetUrlByShortCodeRepositoryService', () => {
   const expectedCreatedAt = Date.now();
@@ -55,7 +55,7 @@ describe('GetUrlByShortCodeRepositoryService', () => {
       },
     ];
 
-    const spies = await configureDbDriverMock(seedDB);
+    const spies = await configureDbDriverMock(seedDB, 'url');
     mockRepository = spies.Repository;
 
     getUrlByShortCodeRepository = new GetUrlByShortCodeRepositoryService(mockRepository, new DatabaseErrorHandler());

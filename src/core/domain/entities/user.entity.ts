@@ -17,7 +17,7 @@ export class UserEntity {
     this.password = validatedParams.password;
     this.createdAt = validatedParams.createdAt || new Date();
     this.updatedAt = validatedParams.updatedAt || new Date();
-    this.deletedAt = validatedParams.deletedAt;
+    this.deletedAt = validatedParams.deletedAt === null ? undefined : validatedParams.deletedAt;
   }
 
   softDelete(): void {
@@ -42,7 +42,7 @@ export class UserEntity {
   }
 
   getUserData() {
-    const { password, ...userWithoutPassword } = this;
+    const { password, id, ...userWithoutPassword } = this;
     return userWithoutPassword;
   }
 }

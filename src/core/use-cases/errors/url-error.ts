@@ -13,3 +13,23 @@ export class UrlRetrievalFailedError extends ApplicationError {
     this.cause = cause;
   }
 }
+
+export class UrlDeletionFailedError extends ApplicationError {
+  constructor(shortCode: string, cause?: Error) {
+    super(`Failed to delete URL for short code "${shortCode}"`);
+    this.cause = cause;
+  }
+}
+
+export class UrlUpdateFailedError extends ApplicationError {
+  constructor(shortCode: string, cause?: Error) {
+    super(`Failed to update URL for short code "${shortCode}"`);
+    this.cause = cause;
+  }
+}
+
+export class UrlAccessDeniedError extends ApplicationError {
+  constructor(shortCode: string, userId: string) {
+    super(`User ${userId} is not allowed to access URL with short code "${shortCode}"`);
+  }
+}

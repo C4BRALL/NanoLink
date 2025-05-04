@@ -85,3 +85,49 @@ export class CreateUrlResponseSwagger {
   })
   link: string;
 }
+
+export class DeleteUrlResponseSwagger {
+  @ApiProperty({
+    description: 'Success message',
+    example: 'URL deleted successfully',
+    type: String,
+  })
+  message: string;
+
+  @ApiProperty({
+    description: 'Short code of the deleted URL',
+    example: 'aZbKq7',
+    type: String,
+  })
+  shortCode: string;
+
+  @ApiProperty({
+    description: 'Original URL that was shortened',
+    example: 'https://example.com/long-url-path',
+    type: String,
+  })
+  originalUrl: string;
+}
+
+export class UpdateUrlResponseSwagger {
+  @ApiProperty({
+    description: 'Success message',
+    example: 'URL updated successfully',
+    type: String,
+  })
+  message: string;
+
+  @ApiProperty({
+    description: 'Short code of the updated URL',
+    example: 'aZbKq7',
+    type: String,
+  })
+  shortCode: string;
+
+  @ApiProperty({
+    description: 'New original URL',
+    example: 'https://www.updated-example.com',
+    type: String,
+  })
+  originalUrl: string;
+}

@@ -9,6 +9,7 @@ describe('ShortUrlController', () => {
 
   beforeEach(async () => {
     jest.spyOn(Date, 'now').mockReturnValue(expectedCreatedAt);
+    jest.spyOn(console, 'info').mockImplementation(() => ({ log: jest.fn() }) as any);
 
     _getUrlByShortCodeService = {
       execute: executeMock,

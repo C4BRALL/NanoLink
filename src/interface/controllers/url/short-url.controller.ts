@@ -51,7 +51,7 @@ export class ShortUrlController {
     const result = await this.getUrlByShortCodeService.execute({ shortCode: shortCodeSchema.data.shortCode });
 
     if (result && result.originalUrl) {
-      return res.status(302).redirect(result.originalUrl);
+      res.status(302).redirect(result.originalUrl);
     } else {
       throw new NotFoundException(`URL with short code '${shortCode}' not found`);
     }

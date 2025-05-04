@@ -4,7 +4,7 @@ import { ZodError } from 'zod';
 import { DomainError } from 'src/core/errors/domain-error';
 import { EntityNotFoundError, QueryFailedError, TypeORMError } from 'typeorm';
 import { DatabaseError, DuplicateEntryError, InvalidRelationError } from 'src/core/errors/database-error';
-import { UrlCreationFailedError } from 'src/core/errors/url-error';
+import { UrlCreationFailedError, UrlAccessDeniedError } from 'src/core/use-cases/errors/url-error';
 import { HttpExceptionFilter } from 'src/interface/error-handling/http-exception.filter';
 
 describe('HttpExceptionFilter', () => {
@@ -185,10 +185,10 @@ describe('HttpExceptionFilter', () => {
 
     filter.catch(exception, mockHost);
 
-    expect(mockStatus).toHaveBeenCalledWith(HttpStatus.BAD_REQUEST);
+    expect(mockStatus).toHaveBeenCalledWith(HttpStatus.CONFLICT);
     expect(mockJson).toHaveBeenCalledWith(
       expect.objectContaining({
-        statusCode: HttpStatus.BAD_REQUEST,
+        statusCode: HttpStatus.CONFLICT,
         message: 'Database error: A Email already exists with this value of email already exists',
         path: '/test-url',
       }),
@@ -324,6 +324,21 @@ describe('HttpExceptionFilter', () => {
       expect.objectContaining({
         statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
         message: 'Internal server error',
+        path: '/test-url',
+      }),
+    );
+  });
+
+  it('should handle UrlAccessDeniedError as HTTP 403', () => {
+    const exception = new UrlAccessDeniedError('abc123', '123456');
+
+    filter.catch(exception, mockHost);
+
+    expect(mockStatus).toHaveBeenCalledWith(HttpStatus.FORBIDDEN);
+    expect(mockJson).toHaveBeenCalledWith(
+      expect.objectContaining({
+        statusCode: HttpStatus.FORBIDDEN,
+        message: expect.any(String),
         path: '/test-url',
       }),
     );

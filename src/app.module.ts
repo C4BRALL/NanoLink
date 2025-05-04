@@ -6,9 +6,10 @@ import { AuthModule } from './infrastructure/auth/auth.module';
 import { InterfaceModule } from './interface/interface.module';
 import { DocumentationModule } from './infrastructure/documentation/documentation.module';
 import { InfrastructureModule } from './infrastructure/infrastructure.module';
+import { LoggerModule } from './infrastructure/logger/logger.module';
 
 @Module({
-  imports: [DomainModule, UseCasesModule, DatabaseModule, AuthModule, InterfaceModule, DocumentationModule, InfrastructureModule],
+  imports: [DomainModule, UseCasesModule, DatabaseModule, InterfaceModule, DocumentationModule, InfrastructureModule, LoggerModule],
   controllers: [],
   providers: [],
 })

@@ -20,6 +20,8 @@
     "!src/**/*.module.ts",
     "!src/**/*-config*.ts",
     "!src/**/*.model.ts",
+    "!src/**/*swagger*.ts",
+    "!src/**/*.interceptor.ts",
     "!src/**/*error*.ts",
     "!src/**/*.entity.ts",
     "!src/**/index.ts",

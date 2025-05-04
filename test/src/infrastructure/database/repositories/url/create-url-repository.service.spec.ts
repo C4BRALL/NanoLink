@@ -1,7 +1,8 @@
 import { UrlEntity } from 'src/core/domain/entities/url.entity';
-import { CreateUrlRepositoryInterface } from 'src/core/domain/repositories/create-url-repository.interface';
+import { CreateUrlRepositoryInterface } from 'src/core/domain/repositories/url/create-url-repository.interface';
 import { CreateUrlRepositoryService } from 'src/infrastructure/database/repositories/url/create-url-repository.service';
 import { configureDbDriverMock } from '../../../../../_mocks_/configure-db-driver-mock';
+import { DatabaseErrorHandler } from 'src/infrastructure/database/utils/db-error-handler';
 
 jest.mock('src/infrastructure/database/mappers/url.mapper', () => ({
   UrlMapper: {
@@ -29,7 +30,6 @@ jest.mock('src/infrastructure/database/mappers/url.mapper', () => ({
 }));
 
 import { UrlMapper } from 'src/infrastructure/database/mappers/url.mapper';
-import { DatabaseErrorHandler } from 'src/infrastructure/database/utils/db-error-handler';
 
 describe('CreateUrlRepositoryService', () => {
   const expectedCreatedAt = Date.now();
@@ -74,5 +74,33 @@ describe('CreateUrlRepositoryService', () => {
     expect(mockRepository.save).toHaveBeenCalled();
     expect(UrlMapper.toPersistence).toHaveBeenCalledWith(url);
     expect(UrlMapper.toDomain).toHaveBeenCalled();
+  });
+
+  it('should return a UrlEntity with correct properties', async () => {
+    const urlInput = new UrlEntity({ originalUrl: 'https://www.google.com', shortCode: '123456' });
+    const savedModel = { id: urlInput.id, originalUrl: urlInput.originalUrl, shortCode: urlInput.shortCode };
+    mockRepository.save.mockResolvedValue(savedModel);
+
+    const result = await createUrlRepository.save(urlInput);
+
+    expect(result).toBeInstanceOf(UrlEntity);
+    expect(result.id).toBe(savedModel.id);
+    expect(result.originalUrl).toBe(savedModel.originalUrl);
+    expect(result.shortCode).toBe(savedModel.shortCode);
+  });
+
+  describe('when repository.save throws an error', () => {
+    it('should delegate error handling to DatabaseErrorHandler', async () => {
+      const repoError = new Error('save failed');
+      mockRepository.save.mockRejectedValue(repoError);
+      const errorHandler = new DatabaseErrorHandler();
+      const handleSpy = jest.spyOn(errorHandler, 'handleError').mockImplementation(() => {
+        throw new Error('handled');
+      });
+      createUrlRepository = new CreateUrlRepositoryService(mockRepository, errorHandler);
+
+      await expect(createUrlRepository.save(new UrlEntity({ originalUrl: 'https://x', shortCode: 'abcdef' }))).rejects.toThrow('handled');
+      expect(handleSpy).toHaveBeenCalledWith(repoError, 'URL');
+    });
   });
 });

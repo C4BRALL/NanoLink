@@ -1,8 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { UrlEntity } from 'src/core/domain/entities/url.entity';
-import { CreateUrlInterface } from 'src/core/domain/use-cases/create-url.interface';
+import { CreateUrlInterface } from 'src/core/domain/use-cases/url/create-url.interface';
 import { nanoid } from 'nanoid';
-import { CreateUrlRepositoryInterface } from 'src/core/domain/repositories/create-url-repository.interface';
+import { CreateUrlRepositoryInterface } from 'src/core/domain/repositories/url/create-url-repository.interface';
 import { EnvironmentConfigService } from 'src/infrastructure/config/environment-config/environment-config.service';
 import { UrlCreationFailedError } from '../errors/url-error';
 

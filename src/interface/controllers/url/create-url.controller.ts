@@ -1,37 +1,46 @@
-import { Body, Controller, Post, Res } from '@nestjs/common';
-import { InvalidUserDataError } from 'src/core/errors/user-error';
+import { Body, Controller, Inject, Post, Req, Res } from '@nestjs/common';
 import { CreateUrlService } from 'src/core/use-cases/url/create-url.service';
 import { CreateUrlDto, CreateUrlSchema, CreateUrlDtoClass } from 'src/interface/dtos/url/create-url.dto';
-import { ApiTags, ApiOperation, ApiBody, ApiResponse } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiBody, ApiResponse, ApiCookieAuth, ApiBearerAuth } from '@nestjs/swagger';
 import { CreateUrlResponseSwagger } from 'src/infrastructure/documentation/swagger/swagger-config/url-swagger.models';
 import { ValidationErrorResponse } from 'src/infrastructure/documentation/swagger/swagger-config/error-swagger.models';
-import { Response } from 'express';
+import { Request, Response } from 'express';
+import { UrlCreationFailedError } from 'src/core/use-cases/errors/url-error';
+import { AuthTokenInterface } from 'src/core/domain/auth/auth-token.interface';
+import { Public } from 'src/interface/decorators/public.decorator';
 
 @ApiTags('URLs')
 @Controller('url')
 export class CreateUrlController {
-  constructor(private readonly createUrlService: CreateUrlService) {}
+  constructor(
+    private readonly createUrlService: CreateUrlService,
+    @Inject('AuthTokenServiceInterface')
+    private readonly authService: AuthTokenInterface,
+  ) {}
 
+  @Public()
   @Post('/create')
+  @ApiCookieAuth('token')
+  @ApiBearerAuth()
   @ApiOperation({
-    summary: 'Create a shortened URL',
-    description: 'Receives an original URL and optionally a user ID, and returns the shortened URL',
+    summary: 'Create shortened URL',
+    description: 'Creates a shortened URL from an original URL. If authenticated, the URL will be associated with the user.',
   })
   @ApiBody({
     type: CreateUrlDtoClass,
-    description: 'Data to create a shortened URL',
+    description: 'URL creation data',
     examples: {
       urlOnly: {
-        summary: 'Only URL (without authentication)',
+        summary: 'Public URL creation',
         value: {
           originalUrl: 'https://teddy360.com.br/material/marco-legal-das-garantias-sancionado-entenda-o-que-muda/',
         },
       },
       withUser: {
-        summary: 'URL with authenticated user',
+        summary: 'URL with user ID (typically provided by token)',
+        description: 'When authenticated, user ID is extracted from the token',
         value: {
           originalUrl: 'https://teddy360.com.br/material/marco-legal-das-garantias-sancionado-entenda-o-que-muda/',
-          userId: 'cc435f3c-6c26-40ef-abe8-635a475c8a7c',
         },
       },
     },
@@ -43,22 +52,24 @@ export class CreateUrlController {
   })
   @ApiResponse({
     status: 400,
-    description: 'Invalid data',
+    description: 'Invalid input data',
     type: ValidationErrorResponse,
   })
-  async createUrl(@Body() body: CreateUrlDto, @Res() res: Response) {
-    const result = CreateUrlSchema.safeParse(body);
-    if (!result.success) {
-      const errorMessage = result.error.errors.map((err) => `${err.path.join('.')}: ${err.message}`).join(', ');
+  async createUrl(@Req() req: Request, @Body() body: CreateUrlDto, @Res() res: Response) {
+    const checkBody = CreateUrlSchema.safeParse(body);
+    if (!checkBody.success) {
+      const errorMessage = checkBody.error.errors.map((err) => `${err.path.join('.')}: ${err.message}`).join(', ');
 
-      throw new InvalidUserDataError(errorMessage);
+      throw new UrlCreationFailedError(errorMessage);
     }
+
+    const userId = await this.authService.tryGetUserIdFromRequest(req);
 
     const url = await this.createUrlService.execute({
       originalUrl: body.originalUrl,
-      userId: body.userId,
+      userId: userId ? userId : undefined,
     });
 
-    return res.status(201).json(url);
+    res.status(201).json(url);
   }
 }
