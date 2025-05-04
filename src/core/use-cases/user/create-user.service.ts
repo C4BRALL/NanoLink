@@ -29,7 +29,7 @@ export class CreateUserService implements CreateUserInterface {
 
       const savedUser = await this.userRepository.save(user);
 
-      const token = this.jwt.sign({ id: user.id });
+      const token = this.jwt.sign({ sub: user.id });
 
       return { user: savedUser.getUserData(), token };
     } catch (error) {

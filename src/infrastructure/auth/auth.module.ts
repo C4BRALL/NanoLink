@@ -3,6 +3,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { JwtService } from './jwt/jwt.service';
 import { EnvironmentConfigService } from '../config/environment-config/environment-config.service';
 import { ConfigurationModule } from '../config/config.module';
+import { AuthTokenService } from './auth-token.service';
 
 @Module({
   imports: [
@@ -16,7 +17,16 @@ import { ConfigurationModule } from '../config/config.module';
       }),
     }),
   ],
-  providers: [{ provide: 'JwtInterface', useClass: JwtService }],
-  exports: ['JwtInterface'],
+  providers: [
+    {
+      provide: 'JwtInterface',
+      useClass: JwtService,
+    },
+    {
+      provide: 'AuthTokenServiceInterface',
+      useClass: AuthTokenService,
+    },
+  ],
+  exports: ['JwtInterface', 'AuthTokenServiceInterface'],
 })
 export class AuthModule {}
