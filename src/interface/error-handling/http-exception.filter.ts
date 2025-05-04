@@ -4,9 +4,8 @@ import { ZodError } from 'zod';
 import { DomainError } from 'src/core/errors/domain-error';
 import { EntityNotFoundError, QueryFailedError, EntityNotFoundError as TypeORMEntityNotFoundError, TypeORMError } from 'typeorm';
 import { DatabaseError, DuplicateEntryError, InvalidRelationError } from 'src/core/errors/database-error';
-import { UrlCreationFailedError } from 'src/core/errors/url-error';
+import { UrlCreationFailedError, UrlDeletionFailedError, UrlRetrievalFailedError } from 'src/core/use-cases/errors/url-error';
 import { ForbiddenResourceError, TokenInvalidError, TokenMissingError, UnauthorizedError } from 'src/core/errors/auth-error';
-import { UrlDeletionFailedError, UrlRetrievalFailedError } from 'src/core/use-cases/errors/url-error';
 
 @Catch()
 export class HttpExceptionFilter implements ExceptionFilter {

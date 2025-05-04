@@ -5,7 +5,7 @@ import { ApiTags, ApiOperation, ApiBody, ApiResponse, ApiCookieAuth, ApiBearerAu
 import { CreateUrlResponseSwagger } from 'src/infrastructure/documentation/swagger/swagger-config/url-swagger.models';
 import { ValidationErrorResponse } from 'src/infrastructure/documentation/swagger/swagger-config/error-swagger.models';
 import { Request, Response } from 'express';
-import { UrlCreationFailedError } from 'src/core/errors/url-error';
+import { UrlCreationFailedError } from 'src/core/use-cases/errors/url-error';
 import { AuthTokenInterface } from 'src/core/domain/auth/auth-token.interface';
 import { Public } from 'src/interface/decorators/public.decorator';
 

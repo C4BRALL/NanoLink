@@ -4,7 +4,7 @@ import { ZodError } from 'zod';
 import { DomainError } from 'src/core/errors/domain-error';
 import { EntityNotFoundError, QueryFailedError, TypeORMError } from 'typeorm';
 import { DatabaseError, DuplicateEntryError, InvalidRelationError } from 'src/core/errors/database-error';
-import { UrlCreationFailedError } from 'src/core/errors/url-error';
+import { UrlCreationFailedError } from 'src/core/use-cases/errors/url-error';
 import { HttpExceptionFilter } from 'src/interface/error-handling/http-exception.filter';
 
 describe('HttpExceptionFilter', () => {
