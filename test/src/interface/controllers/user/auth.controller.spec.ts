@@ -1,6 +1,6 @@
 import { AuthController } from 'src/interface/controllers/user/auth.controller';
 import { AuthUserService } from 'src/core/use-cases/user/auth-user.service';
-import { InvalidUserDataError, UnauthorizedUserDataError } from 'src/core/errors/user-error';
+import { InvalidUserDataError } from 'src/core/errors/user-error';
 import { LoginDto } from 'src/interface/dtos/user/login-dto';
 import { Response } from 'express';
 
@@ -79,10 +79,10 @@ describe('AuthController', () => {
       password: 'password123',
     };
 
-    const authError = new UnauthorizedUserDataError('test@example.com');
+    const authError = new InvalidUserDataError('test@example.com');
     authService.execute.mockRejectedValue(authError);
 
-    await expect(controller.login(loginDto, response)).rejects.toThrow(UnauthorizedUserDataError);
+    await expect(controller.login(loginDto, response)).rejects.toThrow(InvalidUserDataError);
 
     expect(authService.execute).toHaveBeenCalledWith({
       email: 'test@example.com',

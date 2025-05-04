@@ -3,7 +3,7 @@ import { GetUserByEmailRepositoryInterface } from 'src/core/domain/repositories/
 import { HashInterface } from 'src/core/domain/hash/hash.interface';
 import { JwtInterface } from 'src/core/domain/auth/jwt.interface';
 import { UserEntity } from 'src/core/domain/entities/user.entity';
-import { InvalidUserDataError, UnauthorizedUserDataError } from 'src/core/errors/user-error';
+import { InvalidUserDataError } from 'src/core/errors/user-error';
 import { DatabaseError } from 'src/core/errors/database-error';
 
 describe('AuthUserService', () => {
@@ -77,7 +77,7 @@ describe('AuthUserService', () => {
     userRepo.findByEmail.mockResolvedValue(mockUser);
     hash.compare.mockResolvedValue(false);
 
-    await expect(service.execute({ email: 'test@example.com', password: 'wrong-password' })).rejects.toThrow(UnauthorizedUserDataError);
+    await expect(service.execute({ email: 'test@example.com', password: 'wrong-password' })).rejects.toThrow(InvalidUserDataError);
 
     expect(userRepo.findByEmail).toHaveBeenCalledWith('test@example.com');
     expect(hash.compare).toHaveBeenCalledWith('wrong-password', 'hashed-password');

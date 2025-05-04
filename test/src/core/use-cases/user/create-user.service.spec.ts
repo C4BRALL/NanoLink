@@ -31,7 +31,7 @@ describe('CreateUserService', () => {
 
     const createdUser: UserEntity = repository.save.mock.calls[0][0];
 
-    expect(jwt.sign).toHaveBeenCalledWith({ id: createdUser.id });
+    expect(jwt.sign).toHaveBeenCalledWith({ sub: createdUser.id });
     expect(result).toEqual({ user: createdUser.getUserData(), token: 'jwt-token' });
   });
 
