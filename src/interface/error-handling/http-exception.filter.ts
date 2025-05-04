@@ -5,6 +5,7 @@ import { DomainError } from 'src/core/errors/domain-error';
 import { EntityNotFoundError, QueryFailedError, EntityNotFoundError as TypeORMEntityNotFoundError, TypeORMError } from 'typeorm';
 import { DatabaseError, DuplicateEntryError, InvalidRelationError } from 'src/core/errors/database-error';
 import {
+  UrlAccessDeniedError,
   UrlCreationFailedError,
   UrlDeletionFailedError,
   UrlRetrievalFailedError,
@@ -136,7 +137,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
       status = HttpStatus.UNAUTHORIZED;
       message = actualException.message;
       code = 'UNAUTHORIZED';
-    } else if (actualException instanceof ForbiddenResourceError) {
+    } else if (actualException instanceof ForbiddenResourceError || actualException instanceof UrlAccessDeniedError) {
       status = HttpStatus.FORBIDDEN;
       message = actualException.message;
       code = 'FORBIDDEN';
@@ -170,6 +171,10 @@ export class HttpExceptionFilter implements ExceptionFilter {
     }
 
     if (exception instanceof UrlUpdateFailedError && exception.cause) {
+      return this.unwrapException(exception.cause);
+    }
+
+    if (exception instanceof UrlAccessDeniedError && exception.cause) {
       return this.unwrapException(exception.cause);
     }
 

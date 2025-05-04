@@ -3,7 +3,7 @@ import { UpdateUrlOriginalUrlService } from 'src/core/use-cases/url/update-url-o
 import { UrlEntity } from 'src/core/domain/entities/url.entity';
 import { GetUrlByShortCodeRepositoryInterface } from 'src/core/domain/repositories/url/get-url-by-shortcode-repository.interface';
 import { UpdateUrlOriginalUrlRepositoryInterface } from 'src/core/domain/repositories/url/update-url-originalurl-repository.interface';
-import { UrlUpdateFailedError } from 'src/core/use-cases/errors/url-error';
+import { UrlAccessDeniedError, UrlUpdateFailedError } from 'src/core/use-cases/errors/url-error';
 
 describe('UpdateUrlOriginalUrlService', () => {
   let service: UpdateUrlOriginalUrlService;
@@ -12,6 +12,7 @@ describe('UpdateUrlOriginalUrlService', () => {
 
   const mockShortCode = 'abc123';
   const mockUserId = '019698ea-ba2b-7332-aac4-3e6f4838d760';
+  const differentUserId = '019698ea-ba2b-7332-aac4-3e6f4838d761';
   const mockUrlId = '019698ec-5074-7f93-a85f-c534d2a1c82d';
   const originalUrl = 'https://www.example.com';
   const newOriginalUrl = 'https://www.updated-example.com';
@@ -54,7 +55,7 @@ describe('UpdateUrlOriginalUrlService', () => {
     expect(service).toBeDefined();
   });
 
-  it('should update URL originalUrl successfully', async () => {
+  it('should update URL originalUrl successfully when user is the owner', async () => {
     const now = new Date();
     const urlEntity = new UrlEntity({
       id: mockUrlId,
@@ -73,6 +74,7 @@ describe('UpdateUrlOriginalUrlService', () => {
     const result = await service.execute({
       shortCode: mockShortCode,
       originalUrl: newOriginalUrl,
+      userId: mockUserId,
     });
 
     expect(getUrlByShortCodeRepository.findByShortCode).toHaveBeenCalledWith(mockShortCode);
@@ -80,6 +82,58 @@ describe('UpdateUrlOriginalUrlService', () => {
     expect(updateUrlOriginalUrlRepository.update).toHaveBeenCalledWith(urlEntity);
     expect(result).toEqual(urlEntity);
     expect(result.originalUrl).toBe(newOriginalUrl);
+  });
+
+  it('should throw UrlAccessDeniedError when URL has no userId', async () => {
+    const now = new Date();
+    const urlEntity = new UrlEntity({
+      id: mockUrlId,
+      shortCode: mockShortCode,
+      originalUrl: originalUrl,
+      createdAt: now,
+      updatedAt: now,
+    });
+
+    getUrlByShortCodeRepository.findByShortCode.mockResolvedValue(urlEntity);
+
+    await expect(
+      service.execute({
+        shortCode: mockShortCode,
+        originalUrl: newOriginalUrl,
+        userId: mockUserId,
+      }),
+    ).rejects.toThrow(UrlAccessDeniedError);
+
+    expect(getUrlByShortCodeRepository.findByShortCode).toHaveBeenCalledWith(mockShortCode);
+    expect(updateUrlOriginalUrlRepository.update).not.toHaveBeenCalled();
+  });
+
+  it('should throw UrlAccessDeniedError when user is not the owner', async () => {
+    const now = new Date();
+
+    const urlEntity = {
+      id: mockUrlId,
+      shortCode: mockShortCode,
+      originalUrl: originalUrl,
+      userId: differentUserId,
+      createdAt: now,
+      updatedAt: now,
+      update: jest.fn(),
+      isDeleted: jest.fn().mockReturnValue(false),
+    };
+
+    getUrlByShortCodeRepository.findByShortCode.mockResolvedValue(urlEntity as unknown as UrlEntity);
+
+    await expect(
+      service.execute({
+        shortCode: mockShortCode,
+        originalUrl: newOriginalUrl,
+        userId: mockUserId,
+      }),
+    ).rejects.toThrow(UrlAccessDeniedError);
+
+    expect(getUrlByShortCodeRepository.findByShortCode).toHaveBeenCalledWith(mockShortCode);
+    expect(updateUrlOriginalUrlRepository.update).not.toHaveBeenCalled();
   });
 
   it('should throw UrlUpdateFailedError when URL is not found', async () => {
@@ -90,6 +144,7 @@ describe('UpdateUrlOriginalUrlService', () => {
       service.execute({
         shortCode: mockShortCode,
         originalUrl: newOriginalUrl,
+        userId: mockUserId,
       }),
     ).rejects.toThrow(UrlUpdateFailedError);
 
@@ -116,6 +171,7 @@ describe('UpdateUrlOriginalUrlService', () => {
       service.execute({
         shortCode: mockShortCode,
         originalUrl: newOriginalUrl,
+        userId: mockUserId,
       }),
     ).rejects.toThrow(UrlUpdateFailedError);
 

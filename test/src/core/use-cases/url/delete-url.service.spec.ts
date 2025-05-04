@@ -3,7 +3,7 @@ import { DeleteUrlService } from 'src/core/use-cases/url/delete-url.service';
 import { UrlEntity } from 'src/core/domain/entities/url.entity';
 import { DeleteUrlRepositoryInterface } from 'src/core/domain/repositories/url/delete-url-repository.interface';
 import { GetUrlByShortCodeRepositoryInterface } from 'src/core/domain/repositories/url/get-url-by-shortcode-repository.interface';
-import { UrlDeletionFailedError } from 'src/core/use-cases/errors/url-error';
+import { UrlAccessDeniedError, UrlDeletionFailedError } from 'src/core/use-cases/errors/url-error';
 
 describe('DeleteUrlService', () => {
   let service: DeleteUrlService;
@@ -12,6 +12,7 @@ describe('DeleteUrlService', () => {
 
   const mockShortCode = 'abc123';
   const mockUserId = '019698ea-ba2b-7332-aac4-3e6f4838d760';
+  const differentUserId = '019698ea-ba2b-7332-aac4-3e6f4838d761';
   const mockUrlId = '019698ec-5074-7f93-a85f-c534d2a1c82d';
 
   beforeEach(async () => {
@@ -50,7 +51,7 @@ describe('DeleteUrlService', () => {
     expect(service).toBeDefined();
   });
 
-  it('should delete a URL successfully', async () => {
+  it('should delete a URL successfully without checking user when no userId provided', async () => {
     const now = new Date();
     const urlEntity = new UrlEntity({
       id: mockUrlId,
@@ -73,6 +74,61 @@ describe('DeleteUrlService', () => {
     expect(deleteUrlRepository.delete).toHaveBeenCalledWith(urlEntity);
     expect(result).toEqual(urlEntity);
     expect(result.isDeleted()).toBe(true);
+  });
+
+  it('should delete a URL successfully when the user is the owner', async () => {
+    const now = new Date();
+    const urlEntity = new UrlEntity({
+      id: mockUrlId,
+      shortCode: mockShortCode,
+      originalUrl: 'https://www.example.com',
+      userId: mockUserId,
+      createdAt: now,
+      updatedAt: now,
+    });
+
+    const softDeleteSpy = jest.spyOn(urlEntity, 'softDelete');
+
+    getUrlByShortCodeRepository.findByShortCode.mockResolvedValue(urlEntity);
+    deleteUrlRepository.delete.mockResolvedValue(urlEntity);
+
+    const result = await service.execute({
+      shortCode: mockShortCode,
+      userId: mockUserId,
+    });
+
+    expect(getUrlByShortCodeRepository.findByShortCode).toHaveBeenCalledWith(mockShortCode);
+    expect(softDeleteSpy).toHaveBeenCalled();
+    expect(deleteUrlRepository.delete).toHaveBeenCalledWith(urlEntity);
+    expect(result).toEqual(urlEntity);
+    expect(result.isDeleted()).toBe(true);
+  });
+
+  it('should throw UrlAccessDeniedError when user is not the owner', async () => {
+    const now = new Date();
+
+    const urlEntity = {
+      id: mockUrlId,
+      shortCode: mockShortCode,
+      originalUrl: 'https://www.example.com',
+      userId: mockUserId,
+      createdAt: now,
+      updatedAt: now,
+      softDelete: jest.fn(),
+      isDeleted: jest.fn().mockReturnValue(false),
+    };
+
+    getUrlByShortCodeRepository.findByShortCode.mockResolvedValue(urlEntity as unknown as UrlEntity);
+
+    await expect(
+      service.execute({
+        shortCode: mockShortCode,
+        userId: differentUserId,
+      }),
+    ).rejects.toThrow(UrlAccessDeniedError);
+
+    expect(getUrlByShortCodeRepository.findByShortCode).toHaveBeenCalledWith(mockShortCode);
+    expect(deleteUrlRepository.delete).not.toHaveBeenCalled();
   });
 
   it('should throw UrlDeletionFailedError when URL is not found', async () => {

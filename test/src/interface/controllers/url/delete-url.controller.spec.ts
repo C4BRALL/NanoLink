@@ -6,7 +6,7 @@ import { Reflector } from '@nestjs/core';
 import { InvalidShortCodeError } from 'src/core/errors/url-error';
 import { UrlDeletionFailedError } from 'src/core/use-cases/errors/url-error';
 import { AuthGuard } from 'src/interface/guards/auth.guard';
-import { Response } from 'express';
+import { Request, Response } from 'express';
 
 describe('DeleteUrlController', () => {
   let controller: DeleteUrlController;
@@ -72,14 +72,24 @@ describe('DeleteUrlController', () => {
 
     deleteUrlService.execute.mockResolvedValue(urlEntity);
 
+    const mockRequest = {
+      user: {
+        userId: mockUserId,
+      },
+      cookies: {},
+      headers: {},
+      params: {},
+      url: '/url/' + mockShortCode,
+    } as unknown as Request;
+
     const mockResponse = {
       status: jest.fn().mockReturnThis(),
       json: jest.fn(),
     } as unknown as Response;
 
-    await controller.deleteUrl(mockShortCode, mockResponse);
+    await controller.deleteUrl(mockRequest, mockShortCode, mockResponse);
 
-    expect(deleteUrlService.execute).toHaveBeenCalledWith({ shortCode: mockShortCode });
+    expect(deleteUrlService.execute).toHaveBeenCalledWith({ shortCode: mockShortCode, userId: mockUserId });
     expect(mockResponse.status).toHaveBeenCalledWith(200);
     expect(mockResponse.json).toHaveBeenCalledWith({
       message: 'URL deleted successfully',
@@ -89,12 +99,22 @@ describe('DeleteUrlController', () => {
   });
 
   it('should throw InvalidShortCodeError for invalid shortCode', async () => {
+    const mockRequest = {
+      user: {
+        userId: mockUserId,
+      },
+      cookies: {},
+      headers: {},
+      params: {},
+      url: '/url/',
+    } as unknown as Request;
+
     const mockResponse = {
       status: jest.fn().mockReturnThis(),
       json: jest.fn(),
     } as unknown as Response;
 
-    await expect(controller.deleteUrl('', mockResponse)).rejects.toThrow(InvalidShortCodeError);
+    await expect(controller.deleteUrl(mockRequest, '', mockResponse)).rejects.toThrow(InvalidShortCodeError);
 
     expect(deleteUrlService.execute).not.toHaveBeenCalled();
   });
@@ -102,14 +122,24 @@ describe('DeleteUrlController', () => {
   it('should propagate service errors', async () => {
     deleteUrlService.execute.mockRejectedValue(new UrlDeletionFailedError(mockShortCode, new Error('Service error')));
 
+    const mockRequest = {
+      user: {
+        userId: mockUserId,
+      },
+      cookies: {},
+      headers: {},
+      params: {},
+      url: '/url/' + mockShortCode,
+    } as unknown as Request;
+
     const mockResponse = {
       status: jest.fn().mockReturnThis(),
       json: jest.fn(),
     } as unknown as Response;
 
-    await expect(controller.deleteUrl(mockShortCode, mockResponse)).rejects.toThrow(UrlDeletionFailedError);
+    await expect(controller.deleteUrl(mockRequest, mockShortCode, mockResponse)).rejects.toThrow(UrlDeletionFailedError);
 
-    expect(deleteUrlService.execute).toHaveBeenCalledWith({ shortCode: mockShortCode });
+    expect(deleteUrlService.execute).toHaveBeenCalledWith({ shortCode: mockShortCode, userId: mockUserId });
     expect(mockResponse.status).not.toHaveBeenCalled();
     expect(mockResponse.json).not.toHaveBeenCalled();
   });
