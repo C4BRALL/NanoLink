@@ -5,6 +5,7 @@ import { DomainError } from 'src/core/errors/domain-error';
 import { EntityNotFoundError, QueryFailedError, EntityNotFoundError as TypeORMEntityNotFoundError, TypeORMError } from 'typeorm';
 import { DatabaseError, DuplicateEntryError, InvalidRelationError } from 'src/core/errors/database-error';
 import { UrlCreationFailedError } from 'src/core/errors/url-error';
+import { UnauthorizedUserDataError } from 'src/core/errors/user-error';
 
 @Catch()
 export class HttpExceptionFilter implements ExceptionFilter {
@@ -122,6 +123,10 @@ export class HttpExceptionFilter implements ExceptionFilter {
         field: err.path.join('.'),
         message: err.message,
       }));
+    } else if (actualException instanceof UnauthorizedUserDataError) {
+      status = HttpStatus.UNAUTHORIZED;
+      message = actualException.message;
+      code = 'UNAUTHORIZED';
     } else if (actualException instanceof DomainError) {
       status = HttpStatus.BAD_REQUEST;
       message = actualException.message;

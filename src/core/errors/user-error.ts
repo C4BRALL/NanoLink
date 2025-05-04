@@ -11,3 +11,9 @@ export class UserNotFoundError extends DomainError {
     super(`User with id "${id}" not found`);
   }
 }
+
+export class UnauthorizedUserDataError extends DomainError {
+  constructor(email: string) {
+    super(`Invalid credentials for user ${email}`);
+  }
+}
