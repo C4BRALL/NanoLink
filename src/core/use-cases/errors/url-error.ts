@@ -20,3 +20,10 @@ export class UrlDeletionFailedError extends ApplicationError {
     this.cause = cause;
   }
 }
+
+export class UrlUpdateFailedError extends ApplicationError {
+  constructor(shortCode: string, cause?: Error) {
+    super(`Failed to update URL for short code "${shortCode}"`);
+    this.cause = cause;
+  }
+}

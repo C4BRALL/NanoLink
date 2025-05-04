@@ -4,7 +4,12 @@ import { ZodError } from 'zod';
 import { DomainError } from 'src/core/errors/domain-error';
 import { EntityNotFoundError, QueryFailedError, EntityNotFoundError as TypeORMEntityNotFoundError, TypeORMError } from 'typeorm';
 import { DatabaseError, DuplicateEntryError, InvalidRelationError } from 'src/core/errors/database-error';
-import { UrlCreationFailedError, UrlDeletionFailedError, UrlRetrievalFailedError } from 'src/core/use-cases/errors/url-error';
+import {
+  UrlCreationFailedError,
+  UrlDeletionFailedError,
+  UrlRetrievalFailedError,
+  UrlUpdateFailedError,
+} from 'src/core/use-cases/errors/url-error';
 import { ForbiddenResourceError, TokenInvalidError, TokenMissingError, UnauthorizedError } from 'src/core/errors/auth-error';
 
 @Catch()
@@ -161,6 +166,10 @@ export class HttpExceptionFilter implements ExceptionFilter {
     }
 
     if (exception instanceof UrlRetrievalFailedError && exception.cause) {
+      return this.unwrapException(exception.cause);
+    }
+
+    if (exception instanceof UrlUpdateFailedError && exception.cause) {
       return this.unwrapException(exception.cause);
     }
 
