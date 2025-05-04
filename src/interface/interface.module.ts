@@ -5,9 +5,13 @@ import { ShortUrlController } from './controllers/url/short-url.controller';
 import { InfrastructureModule } from 'src/infrastructure/infrastructure.module';
 import { CreateUserController } from './controllers/user/create-user.controller';
 import { AuthController } from './controllers/user/auth.controller';
+import { GetAllUrlsByUserController } from './controllers/url/get-all-urls-by-user.controller';
+import { AuthGuard } from './guards/auth.guard';
+import { AuthModule } from 'src/infrastructure/auth/auth.module';
 
 @Module({
-  imports: [UseCasesModule, InfrastructureModule],
-  controllers: [CreateUrlController, ShortUrlController, CreateUserController, AuthController],
+  imports: [UseCasesModule, InfrastructureModule, AuthModule],
+  controllers: [CreateUrlController, ShortUrlController, CreateUserController, AuthController, GetAllUrlsByUserController],
+  providers: [AuthGuard],
 })
 export class InterfaceModule {}
