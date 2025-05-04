@@ -7,10 +7,18 @@ import { CreateUserService } from './user/create-user.service';
 import { GenerateTokenService } from './auth/generate-token.service';
 import { AuthModule } from 'src/infrastructure/auth/auth.module';
 import { AuthUserService } from './user/auth-user.service';
+import { GetAllUrlsByUserService } from './url/get-all-urls-by-user.service';
 
 @Module({
   imports: [InfrastructureModule, ConfigurationModule, AuthModule],
-  providers: [CreateUrlService, GetUrlByShortCodeService, CreateUserService, GenerateTokenService, AuthUserService],
-  exports: [CreateUrlService, GetUrlByShortCodeService, CreateUserService, GenerateTokenService, AuthUserService],
+  providers: [
+    CreateUrlService,
+    GetUrlByShortCodeService,
+    CreateUserService,
+    GenerateTokenService,
+    AuthUserService,
+    GetAllUrlsByUserService,
+  ],
+  exports: [CreateUrlService, GetUrlByShortCodeService, CreateUserService, GenerateTokenService, AuthUserService, GetAllUrlsByUserService],
 })
 export class UseCasesModule {}
