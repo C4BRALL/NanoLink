@@ -9,6 +9,7 @@ import { AuthModule } from 'src/infrastructure/auth/auth.module';
 import { AuthUserService } from './user/auth-user.service';
 import { GetAllUrlsByUserService } from './url/get-all-urls-by-user.service';
 import { DeleteUrlService } from './url/delete-url.service';
+import { UpdateUrlOriginalUrlService } from './url/update-url-originalurl.service';
 
 @Module({
   imports: [InfrastructureModule, ConfigurationModule, AuthModule],
@@ -20,6 +21,7 @@ import { DeleteUrlService } from './url/delete-url.service';
     AuthUserService,
     GetAllUrlsByUserService,
     DeleteUrlService,
+    UpdateUrlOriginalUrlService,
   ],
   exports: [
     CreateUrlService,
@@ -29,6 +31,7 @@ import { DeleteUrlService } from './url/delete-url.service';
     AuthUserService,
     GetAllUrlsByUserService,
     DeleteUrlService,
+    UpdateUrlOriginalUrlService,
   ],
 })
 export class UseCasesModule {}

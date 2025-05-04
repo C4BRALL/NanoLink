@@ -8,5 +8,6 @@ export namespace UpdateUrlOriginalUrlInterface {
   export type Params = {
     shortCode: string;
     originalUrl: string;
+    userId: string;
   };
 }

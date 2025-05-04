@@ -13,6 +13,7 @@ import { UserModel } from './database/models/user.model';
 import { GetUserByEmailRepositoryService } from './database/repositories/user/get-user-by-email-repository.service';
 import { GetAllUrlsByUserRepositoryService } from './database/repositories/url/get-all-urls-by-user-repository.service';
 import { DeleteUrlRepositoryService } from './database/repositories/url/delete-url-repository.service';
+import { UpdateUrlOriginalUrlRepositoryService } from './database/repositories/url/update-url-originalurl-repository.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([UrlModel, UserModel]), ConfigurationModule, LoggerModule],
@@ -49,6 +50,10 @@ import { DeleteUrlRepositoryService } from './database/repositories/url/delete-u
       provide: 'DeleteUrlRepositoryInterface',
       useClass: DeleteUrlRepositoryService,
     },
+    {
+      provide: 'UpdateUrlOriginalUrlRepositoryInterface',
+      useClass: UpdateUrlOriginalUrlRepositoryService,
+    },
     DatabaseErrorHandler,
   ],
   exports: [
@@ -60,6 +65,7 @@ import { DeleteUrlRepositoryService } from './database/repositories/url/delete-u
     'GetUserByEmailRepositoryInterface',
     'GetAllUrlsByUserRepositoryInterface',
     'DeleteUrlRepositoryInterface',
+    'UpdateUrlOriginalUrlRepositoryInterface',
     DatabaseErrorHandler,
     LoggerModule,
   ],

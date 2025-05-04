@@ -9,6 +9,7 @@ import { GetAllUrlsByUserController } from './controllers/url/get-all-urls-by-us
 import { AuthGuard } from './guards/auth.guard';
 import { AuthModule } from 'src/infrastructure/auth/auth.module';
 import { DeleteUrlController } from './controllers/url/delete-url.controller';
+import { UpdateUrlOriginalUrlController } from './controllers/url/update-url-originalurl.controller';
 
 @Module({
   imports: [UseCasesModule, InfrastructureModule, AuthModule],
@@ -19,6 +20,7 @@ import { DeleteUrlController } from './controllers/url/delete-url.controller';
     AuthController,
     GetAllUrlsByUserController,
     DeleteUrlController,
+    UpdateUrlOriginalUrlController,
   ],
   providers: [AuthGuard],
 })
