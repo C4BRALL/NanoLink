@@ -1,4 +1,5 @@
 # Nano Link - URL Shortener Service
+[![Better Stack Badge](https://uptime.betterstack.com/status-badges/v1/monitor/1x2ji.svg)](https://uptime.betterstack.com/?utm_source=status_badge)
 
 A modern and scalable URL shortening API built with Node.js and NestJS, following Clean Architecture and SOLID principles.
 
