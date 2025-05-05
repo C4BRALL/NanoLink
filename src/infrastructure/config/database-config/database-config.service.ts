@@ -8,7 +8,7 @@ export class DatabaseConfigService implements TypeOrmOptionsFactory {
   constructor(private readonly configService: ConfigService<environmentConfigSchema, true>) {}
 
   createTypeOrmOptions(): TypeOrmModuleOptions {
-    const useSSL: boolean = this.configService.get('DB_USE_SSL') === 'true' || false;
+    const useSSL: boolean = this.configService.get('DB_USE_SSL');
 
     const baseOptions: TypeOrmModuleOptions = {
       type: 'postgres',
@@ -18,8 +18,8 @@ export class DatabaseConfigService implements TypeOrmOptionsFactory {
       password: this.configService.get('DB_PASSWORD'),
       database: this.configService.get('DB_NAME'),
       entities: [__dirname + '/../../database/models/**/*.model{.ts,.js}'],
-      logging: this.configService.get('DB_LOGGING') === 'true' || false,
-      synchronize: this.configService.get('DB_TYPEORM_SYNC') === 'true' || false,
+      logging: this.configService.get('DB_LOGGING'),
+      synchronize: this.configService.get('DB_TYPEORM_SYNC'),
     };
 
     if (useSSL) {
