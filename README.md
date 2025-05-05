@@ -1,4 +1,5 @@
 # Nano Link - URL Shortener Service
+[![Better Stack Badge](https://uptime.betterstack.com/status-badges/v1/monitor/1x2ji.svg)](https://uptime.betterstack.com/?utm_source=status_badge)
 
 A modern and scalable URL shortening API built with Node.js and NestJS, following Clean Architecture and SOLID principles.
 
@@ -103,9 +104,10 @@ DB_USERNAME=admin                                   #your database user
 DB_PASSWORD=secret                                  #your database password
 DB_NAME=nano_link                                   #your database name
 DB_LOGGING=true                                     #set to logging DB transactions
+DB_USE_SSL=false                                    #Set to config SSL/TLS for database conection
 DB_TYPEORM_SYNC=true                                #Set to synchronizing indicates whether the database schema should be automatically created on every application launch.
 NODE_ENV=development                                #Environment (development/production)	
-LOGTAIL_ENDPOINT='https://betterstackdata.com'      #Endpoint provided by the Logtail instance for connection
+LOGTAIL_ENDPOINT='https://in.logtail.com'           #Endpoint provided by the Logtail instance for connection
 LOGTAIL_TOKEN='token'                               #Token for authentication with the Logtail instance
 ```
 
@@ -178,6 +180,7 @@ npm run test:cov
 | `DB_PASSWORD` | PostgreSQL password | secret |
 | `DB_NAME` | Database name | nano_link |
 | `DB_LOGGING` | Log DB transactions (true/false) | true |
+| `DB_USE_SSL` | Config SSL/TLS for database conection (true/false) | false |
 | `DB_TYPEORM_SYNC` | Automatic schema synchronization (true/false) | false |
 | `NODE_ENV` | Environment (development/production) | development |
 | `LOGTAIL_TOKEN` | Logtail service token for logging | - |

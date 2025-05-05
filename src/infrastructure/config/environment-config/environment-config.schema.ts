@@ -15,6 +15,7 @@ export const environmentConfigSchema = z.object({
   LOGTAIL_ENDPOINT: z.string().min(1),
   JWT_SECRET: z.string().min(1).default('secret'),
   JWT_EXPIRES_IN: z.string().min(1).default('15m'),
+  DB_USE_SSL: z.coerce.boolean().default(false),
 });
 
 export type environmentConfigSchema = z.infer<typeof environmentConfigSchema>;

@@ -19,6 +19,7 @@ services:
       - DB_PASSWORD=${DB_PASSWORD}
       - DB_NAME=${DB_NAME}
       - DB_LOGGING=${DB_LOGGING}
+      - DB_USE_SSL=${DB_USE_SSL}
       - DB_TYPEORM_SYNC=${DB_TYPEORM_SYNC}
       - JWT_SECRET=${JWT_SECRET}
       - JWT_EXPIRES_IN=${JWT_EXPIRES_IN}
