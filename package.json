@@ -1,6 +1,6 @@
 {
   "name": "nano-link",
-  "version": "1.5.0",
+  "version": "1.5.1",
   "description": "Nano Link is a URL shortening service that allows you to create short URLs for your links.",
   "author": "https://github.com/C4BRALL",
   "private": true,
